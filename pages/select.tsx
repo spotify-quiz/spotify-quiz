@@ -22,13 +22,14 @@ interface Track {
     };
 }
 
-interface Props {
+export interface Props {
     playlists: Playlist[];
 }
 
 function handleLogout() {
     signOut();
 }
+
 export default function Select({ playlists }: Props) {
     const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
     const [tracks, setTracks] = useState<Track[] | null>(null);
@@ -42,7 +43,8 @@ export default function Select({ playlists }: Props) {
 
 
     return (
-        <>
+        <div>
+            <title>Select - My App</title>
             <div className="flex justify-end mt-4">
                 <Button onClick={handleLogout} variant="outlined">Logout</Button>
             </div>
@@ -79,7 +81,7 @@ export default function Select({ playlists }: Props) {
                     ))}
                 </List>
             )}
-        </>
+        </div>
     );
 }
 
