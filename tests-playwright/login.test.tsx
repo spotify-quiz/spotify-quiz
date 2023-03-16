@@ -30,8 +30,8 @@ test.describe("Login Page", () => {
         await page.waitForNavigation();
 
         // Fill in the login details
-        await page.fill("#login-username", "");
-        await page.fill("#login-password", "");
+        await page.fill("#login-username", "testspotifyquiz@gmail.com");
+        await page.fill("#login-password", "testtesthello123");
 
         // Click on the login button and wait for the navigation to complete
         await Promise.all([
