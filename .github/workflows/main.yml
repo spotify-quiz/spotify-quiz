@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - nextjs-clerk
   pull_request:
     branches:
-      - main
+      - nextjs-clerk
 
 jobs:
   build-and-test:
