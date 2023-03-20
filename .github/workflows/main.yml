@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: 16
 
+      - name: Set up pre-commit
+        uses: pre-commit/action@v2.0.3
+
       - name: Install dependencies
         run: npm ci
 
