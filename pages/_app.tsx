@@ -1,20 +1,17 @@
-import { SessionProvider } from "next-auth/react"
-import '../styles/globals.css'
+import { SessionProvider } from "next-auth/react";
+import { AppProps } from "next/app";
+import "../styles/globals.css";
 
-import type { AppProps } from "next/app"
-import type { Session } from "next-auth"
+import { SpotifyProvider } from "@/context/SpotifyContext";
 
-function App({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps<{ session: Session }>) {
-  return (
-    <div className='bg-neutral-700'>
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-      </SessionProvider>
-    </div>
-  )
+function MyApp({ Component, pageProps }: AppProps) {
+    return (
+        <SessionProvider session={pageProps.session}>
+            <SpotifyProvider>
+                <Component {...pageProps} />
+            </SpotifyProvider>
+        </SessionProvider>
+    );
 }
 
-export default App
+export default MyApp;
