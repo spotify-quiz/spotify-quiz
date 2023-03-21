@@ -68,8 +68,8 @@ export default function Index() {
           </button>
           <p className="text-xs">
             <p className="text-xs">
-              <Link href="/logout">
-                <a className="text-blue-500">Logout to change your account</a>
+              <Link href="/logout" className="text-blue-500">
+                Logout to change your account
               </Link>
             </p>
           </p>
