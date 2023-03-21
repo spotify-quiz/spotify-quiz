@@ -1,107 +1,78 @@
-import { GetServerSideProps } from "next";
-import { getToken } from "next-auth/jwt";
-import { getSession, useSession, signOut } from "next-auth/react";
-import { List, ListItem, ListItemText, Button } from "@mui/material";
-import { useState } from "react";
-
-import { customGet } from "@/utils/customGet";
-import { isAuthenticated } from "@/utils/isAuthenticated";
-
+import { useEffect, useState } from 'react';
+import { customGet } from '../utils/customGet';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+// Add these type definitions at the beginning of your Select component file
 interface Playlist {
-    id: string;
-    name: string;
-    owner: { display_name: string };
+  id: string;
+  name: string;
 }
-
 
 interface Track {
-    track: {
-        id: string;
-        name: string;
-        artists: { name: string }[];
-    };
+  track: {
+    id: string;
+    name: string;
+  };
 }
 
-export interface Props {
-    playlists: Playlist[];
-}
+function Select() {
+  const { data: session } = useSession();
+  const [playlists, setPlaylists] = useState([]);
+  const [tracks, setTracks] = useState([]);
+  const router = useRouter();
 
-function handleLogout() {
-    signOut();
-}
+  useEffect(() => {
+    async function fetchData() {
+      const response = await customGet(
+        'https://api.spotify.com/v1/me/playlists',
+        session
+      );
 
-export default function Select({ playlists }: Props) {
-    const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
-    const [tracks, setTracks] = useState<Track[] | null>(null);
-    const { data: session } = useSession();
-
-    const handlePlaylistClick = async (playlistId: string) => {
-        const response = await customGet(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, session);
-        setTracks(response.items || []);
-        setSelectedPlaylist(playlistId);
-    };
-
-
-    return (
-        <div>
-            <title>Select - My App</title>
-            <div className="flex justify-end mt-4">
-                <Button onClick={handleLogout} variant="outlined">Logout</Button>
-            </div>
-            <List className="grid grid-cols-2 gap-4">
-                {playlists.map((playlist: Playlist) => (
-                    <ListItem
-                        key={playlist.id}
-                        className={`bg-white rounded-lg shadow-md ${
-                            playlist.id === selectedPlaylist ? "bg-green-100" : ""
-                        }`}
-                        onClick={() => handlePlaylistClick(playlist.id)}
-                    >
-                        <ListItemText
-                            primary={playlist.name}
-                            secondary={`By ${playlist.owner.display_name}`}
-                            primaryTypographyProps={{ className: "font-bold" }}
-                            secondaryTypographyProps={{ className: "text-gray-500" }}
-                        />
-                    </ListItem>
-                ))}
-            </List>
-
-            {tracks && tracks.length > 0 && (
-                <List>
-                    {tracks.map((track: Track) => (
-                        <ListItem key={track.track.id}>
-                            <ListItemText
-                                primary={track.track.name}
-                                secondary={track.track.artists
-                                    .map((artist: { name: string }) => artist.name)
-                                    .join(", ")}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
-            )}
-        </div>
-    );
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const session = await getSession(ctx);
-
-    if (!(await isAuthenticated(session))) {
-        return {
-            redirect: {
-                destination: "/",
-                permanent: false,
-            },
-        };
+      // Ensure the playlists are set to an array
+      setPlaylists(response?.items ? response.items : []);
     }
 
-    const playlistsResponse = await customGet(
-        "https://api.spotify.com/v1/me/playlists",
-        session
-    );
-    const playlists = playlistsResponse.items || [];
+    fetchData();
+  }, [session]);
 
-    return { props: { playlists } };
-};
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const handlePlaylistClick = async (playlistId: string) => {
+    const response = await customGet(
+      `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+      session
+    );
+
+    // Ensure the tracks are set to an array
+    setTracks(response?.items ? response.items : []);
+  };
+
+  const handleLogout = () => {
+    router.push('/logout');
+  };
+
+  return (
+    <div>
+      <button onClick={handleLogout}>Logout</button>
+      <h2>Playlists</h2>
+      <ul>
+        {playlists.map((playlist: Playlist) => (
+          <li
+            key={playlist.id}
+            onClick={() => handlePlaylistClick(playlist.id)}
+          >
+            {playlist.name}
+          </li>
+        ))}
+      </ul>
+      <h2>Tracks</h2>
+      <ul>
+        {tracks.map((track: Track) => (
+          <li key={track.track.id}>{track.track.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default Select;
