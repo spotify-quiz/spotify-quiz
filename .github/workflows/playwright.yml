@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - login+playlist
   pull_request:
     branches:
-      - main
+      - login+playlist
 
 jobs:
   build_and_test:
