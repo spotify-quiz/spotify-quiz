@@ -2,77 +2,91 @@ import { useEffect, useState } from 'react';
 import { customGet } from '../utils/customGet';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-// Add these type definitions at the beginning of your Select component file
+
 interface Playlist {
-  id: string;
-  name: string;
+    id: string;
+    name: string;
 }
 
 interface Track {
-  track: {
-    id: string;
-    name: string;
-  };
+    track: {
+        id: string;
+        name: string;
+    };
 }
 
-function Select() {
-  const { data: session } = useSession();
-  const [playlists, setPlaylists] = useState([]);
-  const [tracks, setTracks] = useState([]);
-  const router = useRouter();
+// Add the new prop to the Select component
+interface SelectProps {
+    onPlaylistSelect: (playlistId: string) => void;
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await customGet(
-        'https://api.spotify.com/v1/me/playlists',
-        session
-      );
+function Select({ onPlaylistSelect }: SelectProps) {
+    const { data: session } = useSession();
+    const [playlists, setPlaylists] = useState([]);
+    const [tracks, setTracks] = useState([]);
+    const router = useRouter();
 
-      // Ensure the playlists are set to an array
-      setPlaylists(response?.items ? response.items : []);
-    }
+    useEffect(() => {
+        async function fetchData() {
+            const response = await customGet(
+                'https://api.spotify.com/v1/me/playlists',
+                session
+            );
 
-    fetchData();
-  }, [session]);
+            // Ensure the playlists are set to an array
+            setPlaylists(response?.items ? response.items : []);
+        }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const handlePlaylistClick = async (playlistId: string) => {
-    const response = await customGet(
-      `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-      session
+        fetchData();
+    }, [session]);
+
+    // Add a new state to store the selected playlist ID
+    const [selectedPlaylistId, setSelectedPlaylistId] = useState<string>('');
+
+    // Update the handlePlaylistClick function
+    const handlePlaylistClick = () => {
+        if (selectedPlaylistId) {
+            router.push({
+                pathname: '/renderQuiz',
+                query: { playlistId: selectedPlaylistId },
+            });
+        } else {
+            alert('Please select a playlist');
+        }
+    };
+
+
+    // Handle dropdown change
+    const handleDropdownChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedPlaylistId(event.target.value);
+    };
+
+    const handleLogout = () => {
+        router.push('/logout');
+    };
+
+    return (
+        <div>
+            <button onClick={handleLogout}>Logout</button>
+            <h2>Playlists</h2>
+            {/* Replace the unordered list with a dropdown */}
+            <select onChange={handleDropdownChange}>
+                <option value="">Select a playlist</option>
+                {playlists.map((playlist: Playlist) => (
+                    <option key={playlist.id} value={playlist.id}>
+                        {playlist.name}
+                    </option>
+                ))}
+            </select>
+            <button onClick={handlePlaylistClick}>Submit</button>
+            <h2>Tracks</h2>
+            <ul>
+                {tracks.map((track: Track) => (
+                    <li key={track.track.id}>{track.track.name}</li>
+                ))}
+            </ul>
+        </div>
     );
-
-    // Ensure the tracks are set to an array
-    setTracks(response?.items ? response.items : []);
-  };
-
-  const handleLogout = () => {
-    router.push('/logout');
-  };
-
-  return (
-    <div>
-      <button onClick={handleLogout}>Logout</button>
-      <h2>Playlists</h2>
-      <ul>
-        {playlists.map((playlist: Playlist) => (
-          <li
-            key={playlist.id}
-            onClick={() => handlePlaylistClick(playlist.id)}
-          >
-            {playlist.name}
-          </li>
-        ))}
-      </ul>
-      <h2>Tracks</h2>
-      <ul>
-        {tracks.map((track: Track) => (
-          <li key={track.track.id}>{track.track.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
 }
 
 export default Select;
