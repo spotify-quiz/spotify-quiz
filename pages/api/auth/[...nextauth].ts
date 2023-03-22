@@ -15,9 +15,6 @@ export default NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    maxAge: 3500,
-  },
   callbacks: {
     async jwt({ token, user, account, profile, isNewUser }) {
       if (account) {

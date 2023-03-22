@@ -1,4 +1,4 @@
-import { getSession, signIn, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -25,6 +25,8 @@ export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
+    handleRefreshToken();
+
     if (session?.user?.accessToken) {
       setAccessToken(session.user.accessToken);
     }
@@ -52,6 +54,7 @@ export default function Index() {
 
   const isLoggedIn = !!session && !!spotifyProfile;
   const handleRefreshToken = async () => {
+    console.log('refresh');
     if (session?.user?.refreshToken) {
       const newAccessToken = await refreshAccessToken(
         session.user.refreshToken
