@@ -1,11 +1,15 @@
+// utils/customGet.ts
+
 import { MySession } from '../types/types';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const customGet = async (url: string, session: MySession | null) => {
-  const res = await fetch(url, {
+  const response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${session?.user?.accessToken}`,
     },
-  }).then((res) => res.json());
+  });
 
-  return res;
+  return response.json();
 };
