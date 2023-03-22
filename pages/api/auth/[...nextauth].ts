@@ -7,8 +7,8 @@ const scope =
 export default NextAuth({
   providers: [
     SpotifyProvider({
-      clientId: process.env.SPOTIFY_CLIENT_ID as string,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET as string,
+      clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID as string,
+      clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET as string,
       authorization: `https://accounts.spotify.com/authorize?response_type=code&scope=${encodeURIComponent(
         scope
       )}`,
@@ -16,16 +16,27 @@ export default NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, user, account, profile, isNewUser }) {
       if (account) {
         token.id = account.id;
         token.expires_at = account.expires_at;
         token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token; // Use "refresh_token" instead of "refreshToken"
       }
       return token;
     },
-    async session({ session, token }) {
-      session.user = token;
+    async session({ session, user, token }) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      session.user.JWT = token;
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      session.user.accessToken = token.accessToken;
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      session.user.refreshToken = token.refreshToken; // Use "token.refreshToken" instead of "user.refreshToken"
       return session;
     },
   },

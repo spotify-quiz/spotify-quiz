@@ -1,0 +1,37 @@
+.green-dialog .modal-content {
+    background-color: mediumseagreen;
+    color: white;
+    border-radius: 30px;
+}
+
+.green-dialog .dialog-button {
+    color: mediumseagreen;
+}
+
+.red-dialog .modal-content {
+    background-color: indianred;
+    color: white;
+    border-radius: 30px;
+}
+
+.red-dialog .dialog-button {
+    color: indianred;
+}
+
+.QuizPage {
+    text-align: center;
+    background-color: #282c34;
+    min-height: 100vh;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.choice {
+    height: 60px;
+    background-color: #1BD760;
+    border: transparent
+}
+
+.choice:hover {
+    background-color: springgreen;
+}

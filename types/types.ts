@@ -11,6 +11,7 @@ interface MyUser {
 export interface MySession extends Omit<DefaultSession, 'user'> {
   user?: MyUser;
   expires: string;
+  refreshToken?: string; // Add this line to include the refreshToken property
 }
 
 interface Image {
