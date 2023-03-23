@@ -6,6 +6,11 @@ interface MyUser {
   picture?: string | null;
   image?: string | null;
   accessToken?: string | null;
+
+  refreshToken?: string | null;
+
+
+
 }
 
 export interface MySession extends Omit<DefaultSession, 'user'> {
