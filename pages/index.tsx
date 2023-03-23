@@ -1,4 +1,4 @@
-import { signIn, useSession } from 'next-auth/react';
+import {getSession, signIn, useSession} from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,7 @@ import { customGet } from '../utils/customGet';
 import { MySession } from '../types/types';
 import Link from 'next/link';
 import { refreshAccessToken } from '../utils/refreshAccessToken';
+import Cookies from 'js-cookie';
 
 interface SpotifyImage {
   url: string;
@@ -25,19 +26,19 @@ export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
-    handleRefreshToken();
-
-    if (session?.user?.accessToken) {
-      setAccessToken(session.user.accessToken);
+    const storedAccessToken = Cookies.get('accessToken');
+    if (storedAccessToken) {
+      setAccessToken(storedAccessToken);
     }
 
     async function fetchSpotifyProfile() {
       if (session) {
-        const response = await customGet(
-          'https://api.spotify.com/v1/me',
-          session as MySession
-        );
-        setSpotifyProfile(response);
+        try {
+          const response = await customGet('https://api.spotify.com/v1/me', session as MySession);
+          setSpotifyProfile(response);
+        } catch (error) {
+          console.error('Error fetching Spotify profile:', error);
+        }
       }
     }
 
@@ -54,19 +55,20 @@ export default function Index() {
 
   const isLoggedIn = !!session && !!spotifyProfile;
   const handleRefreshToken = async () => {
-    console.log('refresh');
+    console.log("refresh!!!");
     if (session?.user?.refreshToken) {
-      const newAccessToken = await refreshAccessToken(
-        session.user.refreshToken
-      );
+      const newAccessToken = await refreshAccessToken(session.user.refreshToken);
       console.log('new token', newAccessToken);
-      session.user.accessToken = newAccessToken;
-      console.log(session);
-      console.log('Update', session.user.accessToken);
-      setAccessToken(newAccessToken); // Update access token state
-      console.log('display', accessToken);
+
+      // Update access token state
+      setAccessToken(newAccessToken);
+
+      // Store the access token in a cookie
+      Cookies.set('accessToken', newAccessToken);
     }
   };
+
+
 
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen gap-20">

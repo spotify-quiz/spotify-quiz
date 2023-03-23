@@ -8,14 +8,18 @@ import ResultDialog from "./ResultDialog";
 import {Quiz, Track} from "../types/MockQuizObjects"
 
 function QuizPage({quiz, time}: { quiz: Quiz, time: number }) {
-    const questions = quiz.tracks.items.length
+    if (!quiz || !quiz.tracks || !quiz.tracks.items) {
+        return <p>Loading...</p>;
+    }
+    const questions = quiz.tracks.items.length || 0
 
     // Go through playlist
     const [index, setIndex] = useState(0)
 
     // Set Choice
-    const [choices, setChoices] = useState<Track[]>(quiz.tracks.items.slice(0,4))
-    const [correctChoice, setCorrectChoice] = useState(1)
+    const [choices, setChoices] = useState<Track[]>(quiz?.tracks?.items?.slice(0,4) || []);
+    const [correctChoice, setCorrectChoice] = useState(1);
+
 
     // Counting Score
     const [score, setScore] = useState(0)
@@ -101,9 +105,9 @@ function QuizPage({quiz, time}: { quiz: Quiz, time: number }) {
         setPlaying(false)
 
         if (!audio) {
-            setAudio(new Audio(quiz.tracks.items[index].track.preview_url))
+            setAudio(new Audio(quiz.tracks?.items[index]?.track?.preview_url || ''))
         } else {
-            audio.src = quiz.tracks.items[index].track.preview_url
+            audio.src = quiz.tracks?.items[index]?.track?.preview_url || ''
             audio.load()
         }
 
@@ -111,6 +115,7 @@ function QuizPage({quiz, time}: { quiz: Quiz, time: number }) {
         setChoices(random.choices)
         setCorrectChoice(random.randomCorrectIndex)
     }, [index])
+
 
     useEffect(() => {
         let interval: any;
@@ -157,41 +162,50 @@ function QuizPage({quiz, time}: { quiz: Quiz, time: number }) {
                         setStartTimer={setStartTimer}
                     />
                 </Row>
-                {[0, 2].map(i =>
+                {[0, 2].map((i) => (
                     <Row>
                         <Col>
-                            <Button size="lg"
-                                    className="choice w-75 rounded-5"
-                                    role="choice-button"
-                                    data-testid={ i === correctChoice ? -1 : 1}
-                                    onClick={() => reviewAnswer(i)}>
-                                <b>{choices[i].track.name} - {choices[i].track.name}</b>
+                            <Button
+                                size="lg"
+                                className="choice w-75 rounded-5"
+                                role="choice-button"
+                                data-testid={i === correctChoice ? -1 : 1}
+                                onClick={() => reviewAnswer(i)}
+                            >
+                                <b>
+                                    {choices[i]?.track?.name} - {choices[i]?.track?.name}
+                                </b>
                             </Button>
                         </Col>
                         <Col>
-                            <Button size="lg"
-                                    className="choice w-75 rounded-5"
-                                    role="choice-button"
-                                    data-testid={ i+1 === correctChoice ? -1 : 1}
-                                    onClick={() => reviewAnswer(i+1)}>
-                                <b>{choices[i+1].track.name} - {choices[i+1].track.name}</b>
+                            <Button
+                                size="lg"
+                                className="choice w-75 rounded-5"
+                                role="choice-button"
+                                data-testid={i + 1 === correctChoice ? -1 : 1}
+                                onClick={() => reviewAnswer(i + 1)}
+                            >
+                                <b>
+                                    {choices[i + 1]?.track?.name} - {choices[i + 1]?.track?.name}
+                                </b>
                             </Button>
                         </Col>
                     </Row>
-                )}
+                ))}
             </Container>
 
-            <ResultDialog className={correct ? "green-dialog" : "red-dialog"}
-                          title={correct ? "Correct!" : "Wrong!"}
-                          track={quiz.tracks.items[index].track}
-                          show={showDialog}
-                          onHide={() => changeSong()}
-                          audio={audio}
-                          volume={volume}
-                          playing={playing}
-                          setPlaying={setPlaying}
-                          score={score}
-                          addedScore={addedScore}
+            <ResultDialog
+                className={correct ? "green-dialog" : "red-dialog"}
+                title={correct ? "Correct!" : "Wrong!"}
+                track={quiz.tracks?.items[index]?.track}
+                show={showDialog}
+                onHide={() => changeSong()}
+                audio={audio}
+                volume={volume}
+                playing={playing}
+                setPlaying={setPlaying}
+                score={score}
+                addedScore={addedScore}
             />
         </div>
     );
