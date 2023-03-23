@@ -15,18 +15,15 @@ function ResultDialog(props: any) {
                     </Row>
                     <Row className="mt-4 mb-4">
                         <Col>
-                            <img src={props.track.album[0].url}
+                            <img src={props.track?.album?.images?.[0]?.url}
                                  height="200"
                                  width="200"
                                  alt="Song"/>
                         </Col>
                         <Col className="d-flex flex-column  justify-content-between">
-                            <h3>{props.track.name}</h3>
-                            {/*try album name*/}
-                            <h5>Violett Wautier</h5>
-                            {/*<h5>{props.track.artists.name}</h5>*/}
-                            {/*try album name*/}
-                            <h5>First Album</h5>
+                            <h3>{props.track?.name}</h3>
+                            <h5>{props.track?.artists?.[0]?.name}</h5>
+                            <h5>{props.track?.album?.name}</h5>
                             <AudioPlayer
                                 audio={props.audio}
                                 volume={props.volume}
@@ -36,7 +33,6 @@ function ResultDialog(props: any) {
                                 showVolume={false}
                                 setStartTimer={null}
                             />
-                            {/*</Row>*/}
                         </Col>
                     </Row>
                     <Row className="justify-content-center mb-3">
