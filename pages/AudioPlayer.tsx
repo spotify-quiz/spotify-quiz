@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Image from 'next/image'
 
 // Change the type of the setStartTimer prop
 function AudioPlayer({
@@ -76,9 +77,10 @@ function AudioPlayer({
         </Row>
         <Row className="justify-content-center">
           <Col xs sm="auto" className="pt-1">
-            <img
+            <Image
               src="https://img.icons8.com/ios11/600w/FFFFFF/medium-volume.png"
               style={{ height: 35, width: 35 }}
+              height={35} width={35}
               alt="volume"
             />
           </Col>

@@ -29,7 +29,8 @@ function RenderQuiz() {
                 const song = new Song(
                     item.track.name,
                     images,
-                    item.track.preview_url
+                    item.track.preview_url,
+                    item.track.artists[0].name
                 );
                 return new Track(song);
             });
