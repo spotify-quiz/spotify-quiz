@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Image from 'next/image'
 import AudioPlayer from "./AudioPlayer";
 import ResultDialog from "./ResultDialog";
 import {Quiz, Track} from "../types/MockQuizObjects"
@@ -148,8 +149,8 @@ function QuizPage({quiz, time}: { quiz: Quiz, time: number }) {
                     </Col>
                 </Row>
                 <Row className="justify-content-center">
-                    <img src="https://whisperify.net/assets/soundwave-white.svg" style={{height: 300, width: 400}}
-                         alt="logo"/>
+                    <Image src="https://whisperify.net/assets/soundwave-white.svg" style={{height: 300, width: 400}}
+                           height={300} width={400} alt="logo"/>
                 </Row>
                 <Row className="mb-4 justify-content-center">
                     <AudioPlayer
