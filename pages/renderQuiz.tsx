@@ -1,55 +1,109 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import QuizPage from './QuizPage';
-import { customGet } from '../utils/customGet';
 import { Item, Quiz, Song, Track, Image } from '../types/MockQuizObjects';
+import axios from 'axios';
+import { parseCookies } from 'nookies';
 
-function RenderQuiz() {
-    const { data: session } = useSession();
-    const router = useRouter();
-    const { playlistId } = router.query;
-    const [quiz, setQuiz] = useState<Quiz | null>(null);
+interface Props {
+  accessToken: string | null;
+}
 
-    useEffect(() => {
-        async function fetchData() {
-            if (!playlistId || !session) {
-                return;
+function RenderQuiz({ accessToken }: Props) {
+  const router = useRouter();
+  const { playlistId } = router.query;
+  const [quiz, setQuiz] = useState<Quiz | null>(null);
+
+  useEffect(() => {
+    const fetchPlaylist = async () => {
+      if (!playlistId) {
+        return;
+      }
+
+      try {
+        let response;
+        if (accessToken) {
+          response = await axios.get(
+            `https://api.spotify.com/v1/playlists/${playlistId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
             }
+          );
+        } else {
+          const client_id = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
+          const client_secret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
 
-            const playlist = await customGet(
-                `https://api.spotify.com/v1/playlists/${playlistId}`,
-                session
-            );
+          const credentials = Buffer.from(
+            `${client_id}:${client_secret}`
+          ).toString('base64');
+          const authOptions = {
+            url: 'https://accounts.spotify.com/api/token',
+            method: 'POST',
+            headers: {
+              Authorization: `Basic ${credentials}`,
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            data: 'grant_type=client_credentials',
+          };
 
-            const tracks: Track[] = playlist.tracks.items.map((item: any) => {
-                const images = item.track.album.images.map(
-                    (image: any) => new Image(image.url, image.width, image.height)
-                );
-                const song = new Song(
-                    item.track.name,
-                    images,
-                    item.track.preview_url
-                );
-                return new Track(song);
-            });
-
-            const item = new Item(tracks);
-            const image = playlist.images.length
-                ? new Image(playlist.images[0].url, playlist.images[0].width, playlist.images[0].height)
-                : new Image('', 0, 0);
-            const fetchedQuiz = new Quiz(playlist.name, image, item);
-            setQuiz(fetchedQuiz);
+          const tokenResponse = await axios(authOptions);
+          const token = tokenResponse.data.access_token;
+          response = await axios.get(
+            `https://api.spotify.com/v1/playlists/${playlistId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
         }
 
-        fetchData();
-    }, [playlistId, session]);
+        const playlist = response.data;
 
-    return quiz ? (
-        <QuizPage quiz={quiz} time={60} />
-    ) : (
-        <p>Loading...</p>
-    );
+        const tracks: Track[] = playlist.tracks.items.map((item: any) => {
+          const images = item.track.album.images.map(
+            (image: any) => new Image(image.url, image.width, image.height)
+          );
+          const song = new Song(
+            item.track.name,
+            images,
+            item.track.preview_url,
+            item.track.artists[0].name
+          );
+          return new Track(song);
+        });
+
+        const item = new Item(tracks);
+        const image = playlist.images.length
+          ? new Image(
+              playlist.images[0].url,
+              playlist.images[0].width,
+              playlist.images[0].height
+            )
+          : new Image('', 0, 0);
+        const fetchedQuiz = new Quiz(playlist.name, image, item);
+        setQuiz(fetchedQuiz);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPlaylist();
+  }, [playlistId, accessToken]);
+
+  return quiz ? <QuizPage quiz={quiz} time={60} /> : <p>Loading...</p>;
 }
+
+export const getServerSideProps = async (context) => {
+  const { access_token } = parseCookies(context);
+
+  return {
+    props: {
+      accessToken: access_token || null,
+    },
+  };
+};
 
 export default RenderQuiz;

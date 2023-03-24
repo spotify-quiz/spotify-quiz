@@ -1,92 +1,153 @@
-import { useEffect, useState } from 'react';
-import { customGet } from '../utils/customGet';
-import { useSession } from 'next-auth/react';
+import axios from 'axios';
 import { useRouter } from 'next/router';
+import { parseCookies } from 'nookies';
+import { useEffect, useState } from 'react';
 
 interface Playlist {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 }
 
-interface Track {
-    track: {
-        id: string;
-        name: string;
-    };
+interface SpotifyResponse {
+  playlists: {
+    items: Playlist[];
+  };
 }
 
-// Add the new prop to the Select component
-interface SelectProps {
-    onPlaylistSelect: (playlistId: string) => void;
+interface Props {
+  accessToken: string | null;
 }
 
-function Select({ onPlaylistSelect }: SelectProps) {
-    const { data: session } = useSession();
-    const [playlists, setPlaylists] = useState([]);
-    const [tracks, setTracks] = useState([]);
-    const router = useRouter();
+const Select = ({ accessToken }: Props) => {
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>('');
+  const router = useRouter();
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+      if (accessToken) {
+        const response = await axios.get<SpotifyResponse>(
+          'https://api.spotify.com/v1/me/playlists',
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
 
-    useEffect(() => {
-        async function fetchData() {
-            const response = await customGet(
-                'https://api.spotify.com/v1/me/playlists',
-                session
-            );
+        setPlaylists(response.data.items);
+      } else {
+        const client_id = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
+        const client_secret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
 
-            // Ensure the playlists are set to an array
-            setPlaylists(response?.items ? response.items : []);
+        const credentials = Buffer.from(
+          `${client_id}:${client_secret}`
+        ).toString('base64');
+        const authOptions = {
+          url: 'https://accounts.spotify.com/api/token',
+          method: 'POST',
+          headers: {
+            Authorization: `Basic ${credentials}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          data: 'grant_type=client_credentials',
+        };
+
+        let token;
+
+        try {
+          const response = await axios(authOptions);
+          token = response.data.access_token;
+          console.log(token);
+        } catch (error) {
+          console.error(error);
         }
 
-        fetchData();
-    }, [session]);
-
-    // Add a new state to store the selected playlist ID
-    const [selectedPlaylistId, setSelectedPlaylistId] = useState<string>('');
-
-    // Update the handlePlaylistClick function
-    const handlePlaylistClick = () => {
-        if (selectedPlaylistId) {
-            router.push({
-                pathname: '/renderQuiz',
-                query: { playlistId: selectedPlaylistId },
-            });
-        } else {
-            alert('Please select a playlist');
+        if (token) {
+          // Get the featured playlists using the token
+          const response = await axios.get<SpotifyResponse>(
+            'https://api.spotify.com/v1/browse/featured-playlists',
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setPlaylists(response.data.playlists.items);
         }
+      }
     };
 
+    fetchPlaylists();
+  }, [accessToken]);
 
-    // Handle dropdown change
-    const handleDropdownChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedPlaylistId(event.target.value);
-    };
+  const handlePlaylistChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedPlaylist(event.target.value);
+  };
 
-    const handleLogout = () => {
-        router.push('/logout');
-    };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    router.push({
+      pathname: '/renderQuiz',
+      query: {
+        playlistId: selectedPlaylist,
+      },
+    });
+  };
 
-    return (
-        <div>
-            <button onClick={handleLogout}>Logout</button>
-            <h2>Playlists</h2>
-            {/* Replace the unordered list with a dropdown */}
-            <select onChange={handleDropdownChange}>
-                <option value="">Select a playlist</option>
-                {playlists.map((playlist: Playlist) => (
-                    <option key={playlist.id} value={playlist.id}>
-                        {playlist.name}
-                    </option>
-                ))}
-            </select>
-            <button onClick={handlePlaylistClick}>Submit</button>
-            <h2>Tracks</h2>
-            <ul>
-                {tracks.map((track: Track) => (
-                    <li key={track.track.id}>{track.track.name}</li>
-                ))}
-            </ul>
-        </div>
-    );
-}
+  return (
+    <form onSubmit={handleSubmit}>
+      <h2>Select a Playlist</h2>
+      <select value={selectedPlaylist} onChange={handlePlaylistChange}>
+        <option value="">Select a Playlist</option>
+        {/* Display the user's playlists if logged in */}
+        {accessToken && (
+          <>
+            <optgroup label="Your Playlists">
+              {playlists.map((playlist) => (
+                <option key={playlist.id} value={playlist.id}>
+                  {playlist.name}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label="Featured Playlists">
+              {/* Add featured playlists for logged-in users */}
+              {playlists.map((playlist) => (
+                <option key={playlist.id} value={playlist.id}>
+                  {playlist.name}
+                </option>
+              ))}
+            </optgroup>
+          </>
+        )}
+        {/* Display the featured playlists for guests */}
+        {!accessToken && (
+          <optgroup label="Featured Playlists">
+            {playlists.map((playlist) => (
+              <option key={playlist.id} value={playlist.id}>
+                {playlist.name}
+              </option>
+            ))}
+          </optgroup>
+        )}
+      </select>
+      <button type="submit" disabled={!selectedPlaylist}>
+        Start Quiz
+      </button>
+    </form>
+  );
+};
+
+// Get the access token from cookies
+export const getServerSideProps = async (context) => {
+  const { access_token } = parseCookies(context);
+
+  return {
+    props: {
+      accessToken: access_token || null,
+    },
+  };
+};
 
 export default Select;
