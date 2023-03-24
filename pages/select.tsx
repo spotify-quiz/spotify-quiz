@@ -12,6 +12,7 @@ interface SpotifyResponse {
   playlists: {
     items: Playlist[];
   };
+  items: Playlist[];
 }
 
 interface Props {
