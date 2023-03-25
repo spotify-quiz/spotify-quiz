@@ -3,22 +3,28 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Image from 'next/image';
 import AudioPlayer from './AudioPlayer';
 import ResultDialog from './ResultDialog';
 import { Quiz, Track } from '../types/MockQuizObjects';
 
 function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
-  const questions = quiz.tracks.items.length || 0;
+  if (!quiz || !quiz.tracks || !quiz.tracks.items) {
+    return <div>Loading...</div>;
+  }
+  const questions = quiz?.tracks?.items?.length || 0;
 
   // Go through playlist
   const [index, setIndex] = useState(0);
 
+  const initialChoices = () => {
+    if (quiz?.tracks?.items) {
+      return quiz.tracks.items.slice(0, 4);
+    }
+    return [];
+  };
+  const [choices, setChoices] = useState<Track[]>(initialChoices);
+  const [correctChoice, setCorrectChoice] = useState<number>(1);
   // Set Choice
-  const [choices, setChoices] = useState<Track[]>(
-    quiz?.tracks?.items?.slice(0, 4) || []
-  );
-  const [correctChoice, setCorrectChoice] = useState(1);
 
   // Counting Score
   const [score, setScore] = useState(0);
@@ -30,9 +36,8 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   // For controlling audio
   const [playing, setPlaying] = useState(false);
-
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-  const [volume, setVolume] = useState(0.3);
+  const [volume, setVolume] = useState(0.5);
 
   // Result Dialog
   const [showDialog, setShowDialog] = useState(false);
@@ -40,28 +45,20 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   // Exit this page
   const [done, setDoneStatus] = useState(false);
-  type Track = {
-    // Your Track type definition here
-    track: any;
-  };
-
-  // Declare the choices array to be an array of Track elements
-
-  // Now you can push a Track element into the choices array without a type error
 
   function randomChoices(index: number) {
     const choices: Track[] = [];
-    const randomCorrectIndex = Math.floor(Math.random() * 3); // NOSONAR
+    const randomCorrectIndex = Math.floor(Math.random() * 3);
     const counted = new Set([index]);
 
     for (let i = 0; i < 4; i++) {
       if (i === randomCorrectIndex) {
-        choices.push(quiz.tracks.items[index]);
+        choices.push(quiz?.tracks?.items[index]);
         continue;
       }
-      let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); // NOSONAR
+      let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
       while (counted.has(randomIndex)) {
-        randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); // NOSONAR
+        randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
       }
 
       choices.push(quiz.tracks.items[randomIndex]);
@@ -108,9 +105,9 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
     setPlaying(false);
 
     if (!audio) {
-      setAudio(new Audio(quiz.tracks?.items[index]?.track?.preview_url || ''));
+      setAudio(new Audio(quiz.tracks.items[index].track.preview_url));
     } else {
-      audio.src = quiz.tracks?.items[index]?.track?.preview_url || '';
+      audio.src = quiz.tracks.items[index].track.preview_url;
       audio.load();
     }
 
@@ -157,11 +154,9 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
           </Col>
         </Row>
         <Row className="justify-content-center">
-          <Image
+          <img
             src="https://whisperify.net/assets/soundwave-white.svg"
             style={{ height: 300, width: 400 }}
-            height={300}
-            width={400}
             alt="logo"
           />
         </Row>
@@ -187,7 +182,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
                 onClick={() => reviewAnswer(i)}
               >
                 <b>
-                  {choices[i]?.track?.artist} - {choices[i]?.track?.name}
+                  {choices[i].track.name} - {choices[i].track.name}
                 </b>
               </Button>
             </Col>
@@ -200,8 +195,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
                 onClick={() => reviewAnswer(i + 1)}
               >
                 <b>
-                  {choices[i + 1]?.track?.artist} -{' '}
-                  {choices[i + 1]?.track?.name}
+                  {choices[i + 1].track.name} - {choices[i + 1].track.name}
                 </b>
               </Button>
             </Col>
@@ -212,7 +206,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
       <ResultDialog
         className={correct ? 'green-dialog' : 'red-dialog'}
         title={correct ? 'Correct!' : 'Wrong!'}
-        track={quiz.tracks?.items[index]?.track}
+        track={quiz.tracks.items[index].track}
         show={showDialog}
         onHide={() => changeSong()}
         audio={audio}
