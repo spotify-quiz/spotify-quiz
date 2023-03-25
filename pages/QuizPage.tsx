@@ -17,7 +17,7 @@ function randomChoices(index: number, quiz: Quiz) {
     return array[0] % max;
   }
 
-  const max = 1000000000; // Set the maximum value for the random number
+  const max = 4; // Set the maximum value for the random number
   const randomNumber = getRandomInt(max);
   console.log('Your random number:', randomNumber);
   for (let i = 0; i < 4; i++) {
