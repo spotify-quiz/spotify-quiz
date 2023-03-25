@@ -43,81 +43,31 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
     }
     return [];
   };
-  const initialCorrectChoices = () => {
-    if (quiz?.tracks?.items) {
-      return 1;
-    }
-    return 1;
-  };
-
-  const initialScore = () => {
-    if (quiz?.tracks?.items) {
-      return 0;
-    }
-    return 0;
-  };
-  const initialAddedScore = () => {
-    if (quiz?.tracks?.items) {
-      return 0;
-    }
-    return 0;
-  };
-  const initialStartTimer = () => {
-    if (quiz?.tracks?.items) {
-      return false;
-    }
-    return false;
-  };
-  const initialTimer = () => {
-    if (quiz?.tracks?.items) {
-      return time;
-    }
-    return time;
-  };
-  const initialPlaying = () => {
-    if (quiz?.tracks?.items) {
-      return false;
-    }
-    return false;
-  };
 
   const [choices, setChoices] = useState<Track[]>(initialChoices);
-  const [correctChoice, setCorrectChoice] = useState<number>(
-    initialCorrectChoices
-  );
-  const [score, setScore] = useState(initialScore);
-  const [addedScore, setAddedScore] = useState(initialAddedScore);
-  const [startTimer, setStartTimer] = useState(initialStartTimer);
-  const [timer, setTimer] = useState(initialTimer);
-  const [playing, setPlaying] = useState(initialPlaying);
+
+  const [correctChoice, setCorrectChoice] = useState<number>(1);
+  // Set Choice
+
+  // Counting Score
+  const [score, setScore] = useState(0);
+  const [addedScore, setAddedScore] = useState(0);
+
+  // Timer
+  const [startTimer, setStartTimer] = useState(false);
+  const [timer, setTimer] = useState(time);
+
+  // For controlling audio
+  const [playing, setPlaying] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [volume, setVolume] = useState(0.5);
 
   // Result Dialog
-  const initialShowDialog = () => {
-    if (quiz?.tracks?.items) {
-      return false;
-    }
-    return false;
-  };
-  const initialCorrect = () => {
-    if (quiz?.tracks?.items) {
-      return false;
-    }
-    return false;
-  };
-  const initialDone = () => {
-    if (quiz?.tracks?.items) {
-      return false;
-    }
-    return false;
-  };
-
-  const [showDialog, setShowDialog] = useState(initialShowDialog);
-  const [correct, setCorrect] = useState(initialCorrect);
+  const [showDialog, setShowDialog] = useState(false);
+  const [correct, setCorrect] = useState(false);
 
   // Exit this page
-  const [done, setDoneStatus] = useState(initialDone);
+  const [done, setDoneStatus] = useState(false);
 
   const reviewAnswer = (value: number) => {
     if (!startTimer) {
