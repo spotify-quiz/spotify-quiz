@@ -15,7 +15,7 @@ function AudioPlayer({
   showVolume,
   setStartTimer,
 }: {
-  audio: HTMLAudioElement;
+  audio: any;
   volume: number;
   setVolume: any;
   showVolume: boolean;
