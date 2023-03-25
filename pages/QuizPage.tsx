@@ -7,6 +7,27 @@ import AudioPlayer from './AudioPlayer';
 import ResultDialog from './ResultDialog';
 import { Quiz, Track } from '../types/MockQuizObjects';
 
+function randomChoices(index: number, quiz: Quiz) {
+  const choices: Track[] = [];
+  const randomCorrectIndex = Math.floor(Math.random() * 3);
+  const counted = new Set([index]);
+
+  for (let i = 0; i < 4; i++) {
+    if (i === randomCorrectIndex) {
+      choices.push(quiz?.tracks?.items[index]);
+      continue;
+    }
+    let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
+    while (counted.has(randomIndex)) {
+      randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
+    }
+
+    choices.push(quiz.tracks.items[randomIndex]);
+    counted.add(randomIndex);
+  }
+  return { choices, randomCorrectIndex };
+}
+
 function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
   if (!quiz || !quiz.tracks || !quiz.tracks.items) {
     return <div>Loading...</div>;
@@ -45,27 +66,6 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   // Exit this page
   const [done, setDoneStatus] = useState(false);
-
-  function randomChoices(index: number) {
-    const choices: Track[] = [];
-    const randomCorrectIndex = Math.floor(Math.random() * 3);
-    const counted = new Set([index]);
-
-    for (let i = 0; i < 4; i++) {
-      if (i === randomCorrectIndex) {
-        choices.push(quiz?.tracks?.items[index]);
-        continue;
-      }
-      let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
-      while (counted.has(randomIndex)) {
-        randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
-      }
-
-      choices.push(quiz.tracks.items[randomIndex]);
-      counted.add(randomIndex);
-    }
-    return { choices, randomCorrectIndex };
-  }
 
   const reviewAnswer = (value: number) => {
     if (!startTimer) {
@@ -111,7 +111,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
       audio.load();
     }
 
-    const random = randomChoices(index);
+    const random = randomChoices(index, quiz);
     setChoices(random.choices);
     setCorrectChoice(random.randomCorrectIndex);
   }, [index]);
