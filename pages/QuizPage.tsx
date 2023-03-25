@@ -11,15 +11,24 @@ function randomChoices(index: number, quiz: Quiz) {
   const choices: Track[] = [];
   const randomCorrectIndex = Math.floor(Math.random() * 3);
   const counted = new Set([index]);
+  function getRandomInt(max) {
+    const array = new Uint32Array(1);
+    self.crypto.getRandomValues(array);
+    return array[0] % max;
+  }
 
+  const max = 1000000000; // Set the maximum value for the random number
+  const randomNumber = getRandomInt(max);
+  console.log('Your random number:', randomNumber);
   for (let i = 0; i < 4; i++) {
-    if (i === randomCorrectIndex) {
+    if (i === randomNumber) {
       choices.push(quiz?.tracks?.items[index]);
       continue;
     }
-    let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); //NO SONAR
+    let randomIndex = randomNumber * quiz.tracks.items.length; //NO SONAR
+
     while (counted.has(randomIndex)) {
-      randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); //NO SONAR
+      randomIndex = randomNumber * quiz.tracks.items.length; //NO SONAR
     }
 
     choices.push(quiz.tracks.items[randomIndex]);
@@ -29,21 +38,13 @@ function randomChoices(index: number, quiz: Quiz) {
 }
 
 function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
-  if (!quiz || !quiz.tracks || !quiz.tracks.items) {
-    return <div>Loading...</div>;
-  }
-  const questions = quiz?.tracks?.items?.length || 0;
-
-  // Go through playlist
-  const [index, setIndex] = useState(0);
-
   const initialChoices = () => {
     if (quiz?.tracks?.items) {
       return quiz.tracks.items.slice(0, 4);
     }
     return [];
   };
-
+  const [index, setIndex] = useState(0);
   const [choices, setChoices] = useState<Track[]>(initialChoices);
 
   const [correctChoice, setCorrectChoice] = useState<number>(1);
@@ -68,7 +69,10 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   // Exit this page
   const [done, setDoneStatus] = useState(false);
-
+  if (!quiz || !quiz.tracks || !quiz.tracks.items) {
+    return <div>Loading...</div>;
+  }
+  const questions = quiz?.tracks?.items?.length || 0;
   const reviewAnswer = (value: number) => {
     if (!startTimer) {
       return;
