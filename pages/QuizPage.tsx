@@ -11,24 +11,16 @@ function randomChoices(index: number, quiz: Quiz) {
   const choices: Track[] = [];
   const randomCorrectIndex = Math.floor(Math.random() * 3);
   const counted = new Set([index]);
-  function getRandomInt(max) {
-    const array = new Uint32Array(1);
-    self.crypto.getRandomValues(array);
-    return array[0] % max;
-  }
 
-  const max = 4; // Set the maximum value for the random number
-  const randomNumber = getRandomInt(max);
-  console.log('Your random number:', randomNumber);
   for (let i = 0; i < 4; i++) {
-    if (i === randomNumber) {
+    if (i === randomCorrectIndex) {
       choices.push(quiz?.tracks?.items[index]);
       continue;
     }
-    let randomIndex = randomNumber * quiz.tracks.items.length; //NO SONAR
+    let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); //NO SONAR
 
     while (counted.has(randomIndex)) {
-      randomIndex = randomNumber * quiz.tracks.items.length; //NO SONAR
+      randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); //NO SONAR
     }
 
     choices.push(quiz.tracks.items[randomIndex]);
