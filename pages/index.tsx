@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import styles from '../styles/Login.module.css';
 
 const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
-const REDIRECT_URI = 'https://spotify-quiz-silk.vercel.app/callback';
+const REDIRECT_URI = 'https://spotify-quiz-silk.vercel.app/';
 const CLIENT_ID = 'c42afe5c1f9d450ea196e4a1df7f6fc4';
 const SCOPE = 'user-library-read playlist-read-private';
 
