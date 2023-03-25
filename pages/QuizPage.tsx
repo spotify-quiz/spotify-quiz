@@ -195,7 +195,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
                 onClick={() => reviewAnswer(i + 1)}
               >
                 <b>
-                  {choices[i + 1].track.name} - {choices[i + 1].track.name}
+                  {choices[i + 1].track.artist} - {choices[i + 1].track.name}
                 </b>
               </Button>
             </Col>
