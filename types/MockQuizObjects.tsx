@@ -18,16 +18,17 @@ class Song {
   artist: string;
 
   constructor(
-    name: string,
-    album: Array<Image>,
-    preview_url: string,
-    artist: string
-  ) {
+          name: string,
+          album: Array<Image>,
+          preview_url: string,
+          artist: string
+          ) {
     this.name = name;
     this.album = album;
     this.preview_url = preview_url;
     this.artist = artist;
   }
+}
 
 
 class Track {

@@ -29,20 +29,14 @@ function randomChoices(index: number, quiz: Quiz) {
 }
 
 function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
-  if (!quiz || !quiz.tracks || !quiz.tracks.items) {
-    return <div>Loading...</div>;
-  }
-  const questions = quiz?.tracks?.items?.length || 0;
-
-  // Go through playlist
-  const [index, setIndex] = useState(0);
-
   const initialChoices = () => {
     if (quiz?.tracks?.items) {
       return quiz.tracks.items.slice(0, 4);
     }
     return [];
   };
+  
+  const [index, setIndex] = useState(0);
 
   const [choices, setChoices] = useState<Track[]>(initialChoices);
 
@@ -68,6 +62,10 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   // Exit this page
   const [done, setDoneStatus] = useState(false);
+  if (!quiz || !quiz.tracks || !quiz.tracks.items) {
+    return <div>Loading...</div>;
+  }
+  const questions = quiz?.tracks?.items?.length || 0;
 
   const reviewAnswer = (value: number) => {
     if (!startTimer) {
