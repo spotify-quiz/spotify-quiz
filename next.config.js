@@ -8,6 +8,7 @@ const nextConfig = {
       'platform-lookaside.fbsbx.com',
       'img.icons8.com',
     ],
+
   },
 };
 
