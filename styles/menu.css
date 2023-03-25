@@ -1,0 +1,152 @@
+.Menu {
+    text-align: center;
+}
+
+.page-header{
+    position: absolute;
+    left: 20.42%;
+    right: 18.45%;
+    top: 13.33%;
+    bottom: 77.78%;
+    color: #FFFFFF;
+    background: rgba(0, 0, 0, 0.4)
+}
+
+.menu-Button1{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 11px 18px;
+    gap: 8px;
+    width: 358px;
+    height: 69px;
+    background: #1BD760;
+    border-radius: 999px;
+
+    position: absolute;
+    left: 39.53%;
+    right: 41.82%;
+    top: 32.04%;
+    bottom: 61.57%;
+
+}
+
+.menu-Button2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 11px 18px;
+    gap: 8px;
+    width: 358px;
+    height: 69px;
+    background: #1BD760;
+    border-radius: 999px;
+
+    position: absolute;
+    left: 39.53%;
+    right: 41.82%;
+    top: 48.24%;
+    bottom: 45.37%;
+}
+
+.menu-Button3{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 11px 18px;
+    gap: 8px;
+    width: 358px;
+    height: 69px;
+    background: #1BD760;
+    border-radius: 999px;
+
+    position: absolute;
+    left: 39.53%;
+    right: 41.82%;
+    top: 64.44%;
+    bottom: 29.17%;
+}
+
+.menu-Button4{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 11px 18px;
+    gap: 8px;
+    width: 358px;
+    height: 69px;
+    background: #1BD760;
+    border-radius: 999px;
+
+    position: absolute;
+    left: 39.53%;
+    right: 41.82%;
+    top: 80.64%;
+    bottom: 12.97%;
+}
+
+.menu-logout{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 11px 18px;
+    gap: 8px;
+
+    width: 152px;
+    height: 55px;
+
+    background: #1BD760;
+    border-radius: 999px;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+    position: absolute;
+    left: 85.1%;
+    right: 10.25%;
+    top: 13.33%;
+    bottom: 77.78%;
+
+}
+
+.menu-Buttontext{
+    border: none;
+    background-color: #1BD760;
+    /*width: 95px;*/
+    /*height: 20px;*/
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 100%;
+
+    color: #FFFFFF;
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.about-box{
+    position: absolute;
+    width: 1199px;
+    height: 521px;
+    left: 330px;
+    top: 357px;
+
+    background: #1BD760;
+    border-radius: 70px;
+
+    font-size: 150%;
+    font-family: "Arial Black";
+}
+

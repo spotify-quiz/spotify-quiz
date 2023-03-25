@@ -7,6 +7,8 @@ import { MySession } from '../types/types';
 import Link from 'next/link';
 import { refreshAccessToken } from '../utils/refreshAccessToken';
 import Cookies from 'js-cookie';
+import Button from "./components/button";
+// import Menu from "./menu";
 
 interface SpotifyImage {
   url: string;
@@ -67,7 +69,6 @@ export default function Index() {
       Cookies.set('accessToken', newAccessToken);
     }
   };
-
 
 
   return (
