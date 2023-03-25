@@ -54,7 +54,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   function randomChoices(index: number) {
     const choices: Track[] = [];
-    const randomCorrectIndex = Math.floor(Math.random() * 3);
+    const randomCorrectIndex = Math.floor(Math.random() * 3); // NOSONAR
     const counted = new Set([index]);
 
     for (let i = 0; i < 4; i++) {
@@ -62,9 +62,9 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
         choices.push(quiz.tracks.items[index]);
         continue;
       }
-      let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
+      let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); // NOSONAR
       while (counted.has(randomIndex)) {
-        randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
+        randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); // NOSONAR
       }
 
       choices.push(quiz.tracks.items[randomIndex]);
