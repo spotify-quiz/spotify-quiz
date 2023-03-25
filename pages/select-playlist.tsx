@@ -112,7 +112,7 @@ export default function SelectPlaylist() {
     const logoutWindow = window.open(
       'https://www.spotify.com/logout',
       'Spotify Logout',
-      'width=450,height=300'
+      'noopener, width=450, height=300'
     );
     setTimeout(() => {
       logoutWindow?.close();
