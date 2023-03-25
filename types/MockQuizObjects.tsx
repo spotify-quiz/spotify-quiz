@@ -48,7 +48,9 @@ class Item {
 class Quiz {
   name: string;
   image: Image;
-  tracks: Item;
+  tracks: {
+    items: Array<Track>; // Assuming this is an array of Track elements
+  };
 
   constructor(name: string, image: Image, tracks: Item) {
     this.name = name;

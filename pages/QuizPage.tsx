@@ -33,10 +33,9 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   // For controlling audio
   const [playing, setPlaying] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const [audio, setAudio] = useState<HTMLAudioElement>(null);
-  const [volume, setVolume] = useState(0.5);
+
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [volume, setVolume] = useState(0.3);
 
   // Result Dialog
   const [showDialog, setShowDialog] = useState(false);
@@ -44,9 +43,17 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   // Exit this page
   const [done, setDoneStatus] = useState(false);
+  type Track = {
+    // Your Track type definition here
+    track: any;
+  };
+
+  // Declare the choices array to be an array of Track elements
+
+  // Now you can push a Track element into the choices array without a type error
 
   function randomChoices(index: number) {
-    const choices = [];
+    const choices: Track[] = [];
     const randomCorrectIndex = Math.floor(Math.random() * 3);
     const counted = new Set([index]);
 
@@ -71,7 +78,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
       return;
     }
 
-    audio.load();
+    audio?.load();
     setPlaying(false);
     setStartTimer(false);
     setTimer(time);
@@ -91,7 +98,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   const changeSong = () => {
     if (index === questions - 1) {
-      audio.pause();
+      audio?.pause();
       setDoneStatus(true);
       return;
     }
@@ -183,7 +190,7 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
                 onClick={() => reviewAnswer(i)}
               >
                 <b>
-                  {choices[i]?.track?.name} - {choices[i]?.track?.name}
+                  {choices[i]?.track?.artist} - {choices[i]?.track?.name}
                 </b>
               </Button>
             </Col>
