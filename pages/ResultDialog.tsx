@@ -3,6 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
+import Image from 'next/image'
 import AudioPlayer from './AudioPlayer';
 
 function ResultDialog(props: any) {
@@ -15,7 +16,7 @@ function ResultDialog(props: any) {
           </Row>
           <Row className="mt-4 mb-4">
             <Col>
-              <img
+              <Image
                 src={props.track?.album[0]?.url}
                 height="200"
                 width="200"

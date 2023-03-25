@@ -11,6 +11,7 @@ class Image {
 }
 
 class Song {
+
   name: string;
   album: Array<Image>;
   preview_url: string;
@@ -27,7 +28,7 @@ class Song {
     this.preview_url = preview_url;
     this.artist = artist;
   }
-}
+
 
 class Track {
   track: Song;
