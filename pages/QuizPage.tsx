@@ -17,9 +17,9 @@ function randomChoices(index: number, quiz: Quiz) {
       choices.push(quiz?.tracks?.items[index]);
       continue;
     }
-    let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
+    let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); //NO SONAR
     while (counted.has(randomIndex)) {
-      randomIndex = Math.floor(Math.random() * quiz.tracks.items.length);
+      randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); //NO SONAR
     }
 
     choices.push(quiz.tracks.items[randomIndex]);
