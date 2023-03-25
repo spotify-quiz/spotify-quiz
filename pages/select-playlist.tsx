@@ -24,15 +24,9 @@ export default function SelectPlaylist() {
   );
   const [tracks, setTracks] = useState<Track[]>([]);
   const [guestAccessToken, setGuestAccessToken] = useState<string | null>(null);
-  const [isLockedIn, setIsLockedIn] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const router = useRouter();
   const isGuest = router.query.isGuest === 'true';
-
-  const lockInPlaylist = (playlist: Playlist) => {
-    setSelectedPlaylist(playlist);
-    setIsLockedIn(true);
-  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

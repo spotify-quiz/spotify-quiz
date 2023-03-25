@@ -9,9 +9,6 @@ import ResultDialog from './ResultDialog';
 import { Quiz, Track } from '../types/MockQuizObjects';
 
 function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
-  if (!quiz || !quiz.tracks || !quiz.tracks.items) {
-    return <p>Loading...</p>;
-  }
   const questions = quiz.tracks.items.length || 0;
 
   // Go through playlist
