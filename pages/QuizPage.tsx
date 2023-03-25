@@ -6,10 +6,15 @@ import Col from 'react-bootstrap/Col';
 import AudioPlayer from './AudioPlayer';
 import ResultDialog from './ResultDialog';
 import { Quiz, Track } from '../types/MockQuizObjects';
+function getRandomInt(max) {
+  const array = new Uint32Array(1);
+  self.crypto.getRandomValues(array);
+  return array[0] % max;
+}
 
 function randomChoices(index: number, quiz: Quiz) {
   const choices: Track[] = [];
-  const randomCorrectIndex = Math.floor(Math.random() * 3);
+  const randomCorrectIndex = getRandomInt(3);
   const counted = new Set([index]);
 
   for (let i = 0; i < 4; i++) {
@@ -17,10 +22,10 @@ function randomChoices(index: number, quiz: Quiz) {
       choices.push(quiz?.tracks?.items[index]);
       continue;
     }
-    let randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); //NO SONAR
+    let randomIndex = getRandomInt(quiz.tracks.items.length);
 
     while (counted.has(randomIndex)) {
-      randomIndex = Math.floor(Math.random() * quiz.tracks.items.length); //NO SONAR
+      randomIndex = getRandomInt(quiz.tracks.items.length);
     }
 
     choices.push(quiz.tracks.items[randomIndex]);
