@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import styles from '../styles/Login.module.css';
 
 const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
-const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI as string;
-const CLIENT_ID = 'c42afe5c1f9d450ea196e4a1df7f6fc4';
+const REDIRECT_URI = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI as string;
+const CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID as string;
 const SCOPE = 'user-library-read playlist-read-private';
 
 export default function Login() {

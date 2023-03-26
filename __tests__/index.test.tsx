@@ -58,13 +58,13 @@ describe('Login component', () => {
     const expectedAuthEndpoint = 'https://accounts.spotify.com/authorize';
     const expectedClientId = process.env
       .NEXT_PUBLIC_SPOTIFY_CLIENT_ID as string;
-    const expectedRedirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string;
+    const expectedRedirectUri = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI;
     const expectedScope = 'user-library-read playlist-read-private';
 
     const expectedUrlSearchParams = new URLSearchParams({
       client_id: expectedClientId,
       response_type: 'token',
-      redirect_uri: expectedRedirectUri,
+      redirect_uri: expectedRedirectUri as string,
       scope: expectedScope,
     });
 
