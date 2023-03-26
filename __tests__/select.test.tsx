@@ -1,6 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
 import SelectPlaylist from '../pages/select-playlist';
 import mockRouter from 'next-router-mock';
 
@@ -40,55 +38,4 @@ describe('SelectPlaylist component', () => {
     const submitButton = screen.getByText('Submit');
     expect(submitButton).toBeDisabled();
   });
-  // it('should enable the Submit button if a playlist is selected', async () => {
-  //     const getPlaylistsMock = {
-  //         data: {
-  //             items: [
-  //                 {
-  //                     id:'123',
-  //                     name: 'Playlist 1',
-  //                     totalTracks: 10,
-  //                     images: [{ url: 'https://example.com/image.jpg' }],
-  //                 },
-  //             ],
-  //         },
-  //     };
-  //     const getMock = jest.spyOn(axios, 'get');
-  //     getMock.mockImplementation(() => Promise.resolve(getPlaylistsMock));
-  //     render(<SelectPlaylist />);
-  //
-  //
-  //     const playlistImage = screen.getByAltText('Playlist 1');
-  //
-  //
-  //     const submitButton = screen.getByText('Submit');
-  //     expect(submitButton).toBeEnabled();
-  // });
-  // it('should navigate to the renderQuiz page when a playlist is selected and the Submit button is clicked', async () => {
-  //     const getPlaylistsMock = {
-  //         data: {
-  //             items: [
-  //                 {
-  //                     id: '123',
-  //                     name: 'Playlist 1',
-  //                     totalTracks: 10,
-  //                     images: [{ url: 'https://example.com/image.jpg' }],
-  //                 },
-  //             ],
-  //         },
-  //     };
-  //     axios.get.mockResolvedValue(getPlaylistsMock);
-  //
-  //     const pushMock = useRouter().push;
-  //     render(<SelectPlaylist />);
-  //
-  //     const playlistImage = screen.getByAltText('Playlist 1');
-  //     fireEvent.click(playlistImage);
-  //
-  //     const submitButton = screen.getByText('Submit');
-  //     fireEvent.click(submitButton);
-  //
-  //     expect(pushMock).toHaveBeenCalledWith('/renderQuiz?playlistId=123');
-  //
-  // });
 });
