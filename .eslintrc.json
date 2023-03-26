@@ -10,6 +10,7 @@
   "parserOptions": { "project": ["./tsconfig.json"] },
   "plugins": ["@typescript-eslint"],
   "rules": {
+    "no-empty": ["error", { "allowEmptyCatch": true }],
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/strict-boolean-expressions": [

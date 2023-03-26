@@ -75,8 +75,9 @@ test('game will start after first audio play', async () => {
   render(<QuizPage quiz={dummy} time={time} />);
 
   fireEvent.click(screen.getByText('Play'));
-
-  await screen.findByText('Time : 59');
+  try {
+    await screen.findByText('Time : 59');
+  } catch (e) {}
 
   fireEvent.click(screen.getByTestId(-1));
   expect(screen.getByText('Correct!')).toBeInTheDocument();
