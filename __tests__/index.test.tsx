@@ -56,7 +56,8 @@ describe('Login component', () => {
     fireEvent.click(spotifyLoginButton);
 
     const expectedAuthEndpoint = 'https://accounts.spotify.com/authorize';
-    const expectedClientId = 'c42afe5c1f9d450ea196e4a1df7f6fc4';
+    const expectedClientId = process.env
+      .NEXT_PUBLIC_SPOTIFY_CLIENT_ID as string;
     const expectedRedirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string;
     const expectedScope = 'user-library-read playlist-read-private';
 

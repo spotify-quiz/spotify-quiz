@@ -33,7 +33,7 @@ export default function SelectPlaylist() {
       setAccessToken(localStorage.getItem('access_token'));
     }
     if (isGuest) {
-      const CLIENT_ID = 'c42afe5c1f9d450ea196e4a1df7f6fc4';
+      const CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
       const CLIENT_SECRET = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
 
       const authString = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
