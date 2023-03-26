@@ -26,7 +26,7 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      - name: Run test
+      - name: Run test and coverage
         run: npm run test
 
       - name: Build app
