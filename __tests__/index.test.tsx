@@ -57,7 +57,7 @@ describe('Login component', () => {
 
     const expectedAuthEndpoint = 'https://accounts.spotify.com/authorize';
     const expectedClientId = 'c42afe5c1f9d450ea196e4a1df7f6fc4';
-    const expectedRedirectUri = 'http://localhost:3000/callback';
+    const expectedRedirectUri = process.env.NEXT_PUBLIC_REDIRECT_URI as string;
     const expectedScope = 'user-library-read playlist-read-private';
 
     const expectedUrlSearchParams = new URLSearchParams({

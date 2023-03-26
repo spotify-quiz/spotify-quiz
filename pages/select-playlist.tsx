@@ -34,7 +34,7 @@ export default function SelectPlaylist() {
     }
     if (isGuest) {
       const CLIENT_ID = 'c42afe5c1f9d450ea196e4a1df7f6fc4';
-      const CLIENT_SECRET = '19f303ef68ad41448c08bf2f7b69d937';
+      const CLIENT_SECRET = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
 
       const authString = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
         'base64'
