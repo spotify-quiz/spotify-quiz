@@ -26,153 +26,145 @@ afterEach(() => {
     pauseStub.mockRestore()
 })
 
-test("all are rendered", () => {
-    render(
-        <AudioPlayer
-            audio={audio}
-            volume={volume}
-            setVolume={(value: number) => volume=value}
-            playing={playing}
-            setPlaying={(bool: boolean) => playing=bool}
-            showVolume={true}
-            setStartTimer={() => startTimer--}
-        />
-    )
+describe('test audio player component', () => {
 
-    const button = screen.getByText('Play')
-    expect(button).toBeInTheDocument()
-    const slider = screen.getByAltText('volume')
-    expect(slider).toBeInTheDocument()
-})
+    function renderAndExpectPlayButtonWithProperFunctionalities() {
+        render(
+            <AudioPlayer
+                audio={audio}
+                volume={volume}
+                setVolume={(value: number) => volume=value}
+                playing={playing}
+                setPlaying={(bool: boolean) => playing=bool}
+                showVolume={false}
+                setStartTimer={() => startTimer--}
+            />
+        )
 
-test("hide volume bar", () => {
-    render(
-        <AudioPlayer
-            audio={audio}
-            volume={volume}
-            setVolume={(value: number) => volume=value}
-            playing={playing}
-            setPlaying={(bool: boolean) => playing=bool}
-            showVolume={false}
-            setStartTimer={() => startTimer--}
-        />
-    )
+        let button = screen.getByText('Play')
+        button.click()
+        expect(playing).toBe(true)
+        expect(startTimer).not.toBe(1)
+    }
 
-    const slider = screen.queryByAltText('volume')
-    expect(slider).not.toBeInTheDocument()
-})
+    test("all are rendered", () => {
+        render(
+            <AudioPlayer
+                audio={audio}
+                volume={volume}
+                setVolume={(value: number) => volume = value}
+                playing={playing}
+                setPlaying={(bool: boolean) => playing = bool}
+                showVolume={true}
+                setStartTimer={() => startTimer--}
+            />
+        )
 
-test("play/pause audio with volume bar", () => {
-    render(
-        <AudioPlayer
-            audio={audio}
-            volume={volume}
-            setVolume={(value: number) => volume=value}
-            playing={playing}
-            setPlaying={(bool: boolean) => playing=bool}
-            showVolume={true}
-            setStartTimer={() => startTimer--}
-        />
-    )
+        const button = screen.getByText('Play')
+        expect(button).toBeInTheDocument()
+        const slider = screen.getByAltText('volume')
+        expect(slider).toBeInTheDocument()
+    })
 
-    let button = screen.getByText('Play')
-    button.click()
-    expect(playing).toBe(true)
-    expect(startTimer).not.toBe(1)
+    test("hide volume bar", () => {
+        render(
+            <AudioPlayer
+                audio={audio}
+                volume={volume}
+                setVolume={(value: number) => volume = value}
+                playing={playing}
+                setPlaying={(bool: boolean) => playing = bool}
+                showVolume={false}
+                setStartTimer={() => startTimer--}
+            />
+        )
 
-    render(
-        <AudioPlayer
-            audio={audio}
-            volume={volume}
-            setVolume={(value: number) => volume=value}
-            playing={playing}
-            setPlaying={(bool: boolean) => playing=bool}
-            showVolume={true}
-            setStartTimer={() => startTimer--}
-        />
-    )
-    button = screen.getByText('Pause')
-    button.click()
-    expect(playing).toBe(false)
+        const slider = screen.queryByAltText('volume')
+        expect(slider).not.toBeInTheDocument()
+    })
 
-    expect(playStub).toHaveBeenCalled()
-    expect(pauseStub).toHaveBeenCalled()
-})
+    test("play/pause audio with volume bar", () => {
+        render(
+            <AudioPlayer
+                audio={audio}
+                volume={volume}
+                setVolume={(value: number) => volume = value}
+                playing={playing}
+                setPlaying={(bool: boolean) => playing = bool}
+                showVolume={true}
+                setStartTimer={() => startTimer--}
+            />
+        )
 
-test("play/pause audio without volume bar", () => {
-    render(
-        <AudioPlayer
-            audio={audio}
-            volume={volume}
-            setVolume={(value: number) => volume=value}
-            playing={playing}
-            setPlaying={(bool: boolean) => playing=bool}
-            showVolume={false}
-            setStartTimer={() => startTimer--}
-        />
-    )
+        let button = screen.getByText('Play')
+        button.click()
+        expect(playing).toBe(true)
+        expect(startTimer).not.toBe(1)
 
-    let button = screen.getByText('Play')
-    button.click()
-    expect(playing).toBe(true)
-    expect(startTimer).not.toBe(1)
+        render(
+            <AudioPlayer
+                audio={audio}
+                volume={volume}
+                setVolume={(value: number) => volume = value}
+                playing={playing}
+                setPlaying={(bool: boolean) => playing = bool}
+                showVolume={true}
+                setStartTimer={() => startTimer--}
+            />
+        )
+        button = screen.getByText('Pause')
+        button.click()
+        expect(playing).toBe(false)
 
-    render(
-        <AudioPlayer
-            audio={audio}
-            volume={volume}
-            setVolume={(value: number) => volume=value}
-            playing={playing}
-            setPlaying={(bool: boolean) => playing=bool}
-            showVolume={false}
-            setStartTimer={() => startTimer--}
-        />
-    )
-    button = screen.getByText('Pause')
-    button.click()
-    expect(playing).toBe(false)
-    expect(playStub).toHaveBeenCalled()
-    expect(pauseStub).toHaveBeenCalled()
-})
+        expect(playStub).toHaveBeenCalled()
+        expect(pauseStub).toHaveBeenCalled()
+    })
 
-test("audio ended", () => {
-    render(
-        <AudioPlayer
-            audio={audio}
-            volume={volume}
-            setVolume={(value: number) => volume=value}
-            playing={playing}
-            setPlaying={(bool: boolean) => playing=bool}
-            showVolume={false}
-            setStartTimer={() => startTimer--}
-        />
-    )
+    test("play/pause audio without volume bar", () => {
+        renderAndExpectPlayButtonWithProperFunctionalities()
 
-    let button = screen.getByText('Play')
-    button.click()
-    expect(playing).toBe(true)
-    expect(startTimer).not.toBe(1)
+        render(
+            <AudioPlayer
+                audio={audio}
+                volume={volume}
+                setVolume={(value: number) => volume = value}
+                playing={playing}
+                setPlaying={(bool: boolean) => playing = bool}
+                showVolume={false}
+                setStartTimer={() => startTimer--}
+            />
+        )
+        const button = screen.getByText('Pause')
+        button.click()
+        expect(playing).toBe(false)
+        expect(playStub).toHaveBeenCalled()
+        expect(pauseStub).toHaveBeenCalled()
+    })
 
-    fireEvent(audio, new Event("ended"))
+    test("audio ended", () => {
+        renderAndExpectPlayButtonWithProperFunctionalities()
 
-    expect(playing).toBe(false)
-})
+        fireEvent(audio, new Event("ended"))
 
-test("adjust volume", () => {
-    render(
-        <AudioPlayer
-            audio={audio}
-            volume={volume}
-            setVolume={(value: number) => volume=value}
-            playing={playing}
-            setPlaying={(bool: boolean) => playing=bool}
-            showVolume={true}
-            setStartTimer={() => startTimer--}
-        />
-    )
+        expect(playing).toBe(false)
+    })
 
-    const slider = screen.getByTestId("slider")
-    expect(volume).toBe(0.5)
-    fireEvent.change(slider, {target: {value:0.1}})
-    expect(volume).toBe('0.1')
-})
+    test("adjust volume", () => {
+        render(
+            <AudioPlayer
+                audio={audio}
+                volume={volume}
+                setVolume={(value: number) => volume = value}
+                playing={playing}
+                setPlaying={(bool: boolean) => playing = bool}
+                showVolume={true}
+                setStartTimer={() => startTimer--}
+            />
+        )
+
+        const slider = screen.getByTestId("slider")
+        expect(volume).toBe(0.5)
+        fireEvent.change(slider, {target: {value: 0.1}})
+        expect(volume).toBe('0.1')
+    })
+});
