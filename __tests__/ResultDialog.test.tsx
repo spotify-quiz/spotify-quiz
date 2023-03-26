@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ResultDialog from '@/pages/ResultDialog';
 import { Image, Song, Track } from '@/types/MockQuizObjects';
-import setUpMockHTMLMediaElement from '@/pages/setupTest';
+import setUpMockHTMLMediaElement from '@/utils/setupTest';
 
 // Dummy data
 const dib = new Image(
