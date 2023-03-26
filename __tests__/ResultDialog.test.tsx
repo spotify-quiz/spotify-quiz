@@ -3,6 +3,7 @@ import {render, screen,} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import ResultDialog from "@/pages/ResultDialog";
 import {Image, Song, Track} from "@/types/MockQuizObjects";
+import setUpMockHTMLMediaElement from "@/__tests__/setupTest";
 
 // Dummy data
 const dib = new Image("https://i.scdn.co/image/ab67616d0000b273649e31b49e38add30e78b57d", 640, 640)
@@ -20,13 +21,9 @@ let playStub: any;
 let pauseStub: any;
 
 beforeEach(() => {
-    playStub = jest
-        .spyOn(window.HTMLMediaElement.prototype, 'play')
-        .mockImplementation(() => {return new Promise(() => {})})
-
-    pauseStub = jest
-        .spyOn(window.HTMLMediaElement.prototype, 'pause')
-        .mockImplementation(() => {})
+    const funcs = setUpMockHTMLMediaElement()
+    playStub = funcs[0]
+    pauseStub = funcs[1]
 })
 
 afterEach(() => {

@@ -1,7 +1,9 @@
 import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom'
+import './setupTest'
 import AudioPlayer from "@/pages/AudioPlayer";
+import setUpMockHTMLMediaElement from "@/__tests__/setupTest";
 
 const audio = new Audio("https://p.scdn.co/mp3-preview/ec256975df2ce04185ba00f5f70a125cbcb4ae5e?cid=2847cfc683244615b79a93a6e24f375c")
 
@@ -14,13 +16,9 @@ let playStub: any;
 let pauseStub: any;
 
 beforeEach(() => {
-    playStub = jest
-        .spyOn(window.HTMLMediaElement.prototype,'play')
-        .mockImplementation(() => {return new Promise(() => {})})
-
-    pauseStub = jest
-        .spyOn(window.HTMLMediaElement.prototype, 'pause')
-        .mockImplementation(() => {})
+    const funcs = setUpMockHTMLMediaElement()
+    playStub = funcs[0]
+    pauseStub = funcs[1]
 })
 
 afterEach(() => {

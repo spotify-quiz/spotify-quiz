@@ -3,6 +3,7 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import '@testing-library/jest-dom'
 import {Image, Item, Quiz, Song, Track} from "@/types/MockQuizObjects";
 import QuizPage from "@/pages/QuizPage";
+import setUpMockHTMLMediaElement from "@/__tests__/setupTest";
 
 const dib = new Image("https://i.scdn.co/image/ab67616d0000b273649e31b49e38add30e78b57d", 640, 640)
 const dim = new Image("https://i.scdn.co/image/ab67616d0000b273649e31b49e38add30e78b57d", 300, 300)
@@ -30,17 +31,10 @@ let pauseStub: any;
 let loadStub: any;
 
 beforeEach(() => {
-    playStub = jest
-        .spyOn(window.HTMLMediaElement.prototype, 'play')
-        .mockImplementation(() => {return new Promise(() => {})})
-
-    pauseStub = jest
-        .spyOn(window.HTMLMediaElement.prototype, 'pause')
-        .mockImplementation(() => {})
-
-    loadStub = jest
-        .spyOn(window.HTMLMediaElement.prototype, 'load')
-        .mockImplementation(() => {})
+    const funcs = setUpMockHTMLMediaElement()
+    playStub = funcs[0]
+    pauseStub = funcs[1]
+    loadStub = funcs[2]
 })
 
 afterEach(() => {
