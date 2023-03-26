@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Image, Item, Quiz, Song, Track } from '@/types/MockQuizObjects';
 import QuizPage from '@/pages/QuizPage';
-import setUpMockHTMLMediaElement from '@/__tests__/setupTest';
+import setUpMockHTMLMediaElement from '@/pages/setupTest';
 
 const dib = new Image(
   'https://i.scdn.co/image/ab67616d0000b273649e31b49e38add30e78b57d',
