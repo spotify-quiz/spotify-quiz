@@ -31,49 +31,52 @@ afterEach(() => {
     pauseStub.mockRestore()
 })
 
-test('green-dialog', () => {
-    render(<ResultDialog className={"green-dialog"}
-                         title={"Correct!"}
-                         track={dummyTrack.track}
-                         show={true}
-                         onHide={() => dummyShowDialog = false}
-                         audio={audio}
-    />)
-    const dialog = screen.getByText('Correct!');
-    expect(dialog).toBeInTheDocument();
-});
+describe('test result dialog', () => {
 
-test('red-dialog', () => {
-    render(<ResultDialog className={"red-dialog"}
-                         title={"Wrong!"}
-                         track={dummyTrack.track}
-                         show={true}
-                         onHide={() => dummyShowDialog = false}
-                         audio={audio}
-                         volume={0.5}
-                         playing={playing}
-                         setPlaying={(bool: boolean) => playing = bool}
-                         score={0}
-                         addedScore={0}
-    />)
-    const dialog = screen.getByText('Wrong!');
-    expect(dialog).toBeInTheDocument();
-});
+    test('green-dialog', () => {
+        render(<ResultDialog className={"green-dialog"}
+                             title={"Correct!"}
+                             track={dummyTrack.track}
+                             show={true}
+                             onHide={() => dummyShowDialog = false}
+                             audio={audio}
+        />)
+        const dialog = screen.getByText('Correct!');
+        expect(dialog).toBeInTheDocument();
+    });
 
-test('hide dialog', () => {
-    render(<ResultDialog className={"green-dialog"}
-                         title={"Correct!"}
-                         track={dummyTrack.track}
-                         show={false}
-                         onHide={() => dummyShowDialog = false}
-                         audio={audio}
-                         volume={0.5}
-                         playing={playing}
-                         setPlaying={(bool: boolean) => playing = bool}
-                         score={0}
-                         addedScore={0}
+    test('red-dialog', () => {
+        render(<ResultDialog className={"red-dialog"}
+                             title={"Wrong!"}
+                             track={dummyTrack.track}
+                             show={true}
+                             onHide={() => dummyShowDialog = false}
+                             audio={audio}
+                             volume={0.5}
+                             playing={playing}
+                             setPlaying={(bool: boolean) => playing = bool}
+                             score={0}
+                             addedScore={0}
+        />)
+        const dialog = screen.getByText('Wrong!');
+        expect(dialog).toBeInTheDocument();
+    });
+
+    test('hide dialog', () => {
+        render(<ResultDialog className={"green-dialog"}
+                             title={"Correct!"}
+                             track={dummyTrack.track}
+                             show={false}
+                             onHide={() => dummyShowDialog = false}
+                             audio={audio}
+                             volume={0.5}
+                             playing={playing}
+                             setPlaying={(bool: boolean) => playing = bool}
+                             score={0}
+                             addedScore={0}
         />)
 
-    const dialog = screen.queryByText('Correct!');
-    expect(dialog).not.toBeInTheDocument();
-});
+        const dialog = screen.queryByText('Correct!');
+        expect(dialog).not.toBeInTheDocument();
+    });
+})

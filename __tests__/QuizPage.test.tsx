@@ -42,98 +42,104 @@ afterEach(() => {
     pauseStub.mockRestore()
 })
 
-test("all are rendered", () => {
-    render(
-        <QuizPage quiz={dummy} time={time}/>
-    )
+describe('test Quiz page', () => {
+    test('empty quiz', () => {
+        render(<QuizPage quiz={null} time={time} />)
+    })
 
-    expect(screen.getByText('1.')).toBeInTheDocument()
-    expect(screen.getByText('Time : ' + time)).toBeInTheDocument()
-    expect(screen.getByText('Score : 0')).toBeInTheDocument()
-    expect(screen.getByText('Play')).toBeInTheDocument()
-    expect(screen.getAllByRole('choice-button').length).not.toBe(0)
-})
+    test("all are rendered", () => {
+        render(
+            <QuizPage quiz={dummy} time={time}/>
+        )
 
-test("game won't start until first audio play", () => {
-    render(
-        <QuizPage quiz={dummy} time={time}/>
-    )
+        expect(screen.getByText('1.')).toBeInTheDocument()
+        expect(screen.getByText('Time : ' + time)).toBeInTheDocument()
+        expect(screen.getByText('Score : 0')).toBeInTheDocument()
+        expect(screen.getByText('Play')).toBeInTheDocument()
+        expect(screen.getAllByRole('choice-button').length).not.toBe(0)
+    })
 
-    fireEvent.click(screen.getByTestId(-1))
-    expect(screen.queryByText("Correct!")).not.toBeInTheDocument()
-})
+    test("game won't start until first audio play", () => {
+        render(
+            <QuizPage quiz={dummy} time={time}/>
+        )
 
-test("game will start after first audio play", async () => {
-    render(
-        <QuizPage quiz={dummy} time={time}/>
-    )
+        fireEvent.click(screen.getByTestId(-1))
+        expect(screen.queryByText("Correct!")).not.toBeInTheDocument()
+    })
 
-    fireEvent.click(screen.getByText('Play'))
+    test("game will start after first audio play", async () => {
+        render(
+            <QuizPage quiz={dummy} time={time}/>
+        )
 
-    // Just for making the timer runs and get 100 coverage
-    try {
-        await screen.findByText("Time : 59")
-    } catch (e) {
+        fireEvent.click(screen.getByText('Play'))
 
-    }
+        // Just for making the timer runs and get 100 coverage
+        try {
+            await screen.findByText("Time : 59")
+        } catch (e) {
 
-    fireEvent.click(screen.getByTestId(-1))
-    expect(screen.getByText("Correct!")).toBeInTheDocument()
-})
+        }
 
-test("score change when answer correctly", () => {
-    render(
-        <QuizPage quiz={dummy} time={time}/>
-    )
+        fireEvent.click(screen.getByTestId(-1))
+        expect(screen.getByText("Correct!")).toBeInTheDocument()
+    })
 
-    fireEvent.click(screen.getByText('Play'))
-    fireEvent.click(screen.getByTestId(-1))
-    expect(screen.getByText("Correct!")).toBeInTheDocument()
-    expect(screen.queryByText("Score : 0")).not.toBeInTheDocument()
-})
+    test("score change when answer correctly", () => {
+        render(
+            <QuizPage quiz={dummy} time={time}/>
+        )
 
-test("wrong answer reveals red-dialog and score remain the same", () => {
-    render(
-        <QuizPage quiz={dummy} time={time}/>
-    )
+        fireEvent.click(screen.getByText('Play'))
+        fireEvent.click(screen.getByTestId(-1))
+        expect(screen.getByText("Correct!")).toBeInTheDocument()
+        expect(screen.queryByText("Score : 0")).not.toBeInTheDocument()
+    })
 
-    fireEvent.click(screen.getByText('Play'))
-    fireEvent.click(screen.getAllByTestId(1)[0])
-    expect(screen.getByText("Wrong!")).toBeInTheDocument()
-    expect(screen.getByText("Score : 0")).toBeInTheDocument()
-})
+    test("wrong answer reveals red-dialog and score remain the same", () => {
+        render(
+            <QuizPage quiz={dummy} time={time}/>
+        )
 
-test("time out reveals red-dialog and score remain the same", async () => {
-    render(
-        <QuizPage quiz={dummy} time={0}/>
-    )
-
-    fireEvent.click(screen.getByText('Play'))
-    expect(await screen.findByText("Wrong!")).toBeInTheDocument()
-})
-
-test("change to new song after close dialog", () => {
-    render(
-        <QuizPage quiz={dummy} time={time}/>
-    )
-
-    fireEvent.click(screen.getByText('Play'))
-    fireEvent.click(screen.getAllByTestId(1)[0])
-    expect(screen.getByText("Wrong!")).toBeInTheDocument()
-    fireEvent.click(screen.getByText("Close"))
-    expect(screen.getByText('2.')).toBeInTheDocument()
-})
-
-test("go to next page after quiz finished", () => {
-    render(
-        <QuizPage quiz={dummy} time={time}/>
-    )
-
-    for (let i = 0; i<4; i++) {
-        fireEvent.click(screen.getAllByText('Play')[0])
+        fireEvent.click(screen.getByText('Play'))
         fireEvent.click(screen.getAllByTestId(1)[0])
-        fireEvent.click(screen.getByText("Close"))
-    }
+        expect(screen.getByText("Wrong!")).toBeInTheDocument()
+        expect(screen.getByText("Score : 0")).toBeInTheDocument()
+    })
 
-    expect(screen.queryByText("Play")).not.toBeInTheDocument()
+    test("time out reveals red-dialog and score remain the same", async () => {
+        render(
+            <QuizPage quiz={dummy} time={0}/>
+        )
+
+        fireEvent.click(screen.getByText('Play'))
+        expect(await screen.findByText("Wrong!")).toBeInTheDocument()
+    })
+
+    test("change to new song after close dialog", () => {
+        render(
+            <QuizPage quiz={dummy} time={time}/>
+        )
+
+        fireEvent.click(screen.getByText('Play'))
+        fireEvent.click(screen.getAllByTestId(1)[0])
+        expect(screen.getByText("Wrong!")).toBeInTheDocument()
+        fireEvent.click(screen.getByText("Close"))
+        expect(screen.getByText('2.')).toBeInTheDocument()
+    })
+
+    test("go to next page after quiz finished", () => {
+        render(
+            <QuizPage quiz={dummy} time={time}/>
+        )
+
+        for (let i = 0; i < 4; i++) {
+            fireEvent.click(screen.getAllByText('Play')[0])
+            fireEvent.click(screen.getAllByTestId(1)[0])
+            fireEvent.click(screen.getByText("Close"))
+        }
+
+        expect(screen.queryByText("Play")).not.toBeInTheDocument()
+    })
 })
