@@ -21,7 +21,7 @@ function AudioPlayer({
   showVolume: boolean;
   playing: boolean;
   setPlaying: any;
-  setStartTimer: (value: boolean) => void;
+  setStartTimer: any;
 }) {
   // Change the togglePlay function to call setStartTimer with a boolean value
   const togglePlay = () => {
