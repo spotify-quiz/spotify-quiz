@@ -25,20 +25,16 @@ function ResultDialog(props: any) {
             </Col>
             <Col className="d-flex flex-column  justify-content-between">
               <h3>{props.track?.name}</h3>
-              <h5>{props.track?.artists?.[0]?.name}</h5>
+              <h5>{props.track?.artists}</h5>
               <h5>{props.track?.album?.name}</h5>
               <AudioPlayer
                 audio={props.audio}
                 volume={props.volume}
-                setVolume={(newVolume: number) => {
-                  /* Implement setVolume logic here */
-                }}
+                setVolume={null}
                 playing={props.playing}
                 setPlaying={props.setPlaying}
                 showVolume={false}
-                setStartTimer={(value: boolean) => {
-                  /* Implement setStartTimer logic here */
-                }}
+                setStartTimer={null}
               />
             </Col>
           </Row>

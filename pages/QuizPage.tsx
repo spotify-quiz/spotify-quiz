@@ -66,9 +66,11 @@ function QuizPage({ quiz, time }: { quiz: Quiz; time: number }) {
 
   // Exit this page
   const [done, setDoneStatus] = useState(false);
+
   if (!quiz || !quiz.tracks || !quiz.tracks.items) {
     return <div>Loading...</div>;
   }
+
   const questions = quiz?.tracks?.items?.length || 0;
   const reviewAnswer = (value: number) => {
     if (!startTimer) {
