@@ -96,8 +96,7 @@ function QuizPage({quiz, time}: { quiz: Quiz; time: number }) {
     useEffect(() => {
         setPlaying(false);
 
-        if (!quiz || !quiz.tracks || !quiz.tracks.items) {}
-        else {
+        if (quiz && quiz.tracks && quiz.tracks.items) {
             if (!audio) {
                 setAudio(new Audio(quiz.tracks.items[index].track.preview_url));
             } else {
