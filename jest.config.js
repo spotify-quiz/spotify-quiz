@@ -8,7 +8,7 @@ const customJestConfig = {
     collectCoverage: true,
     coverageDirectory: 'coverage',
     coverageProvider: 'v8',
-    coverageReporters: ['text', 'cobertura'],
+    coverageReporters: ['text', 'cobertura', 'lcov'],
     testMatch: [
       "**/__tests__/**/?(*._)+(spec|test).[jt]s?(x)",
       "**/?(*.)+(spec|test).[tj]s?(x)"
