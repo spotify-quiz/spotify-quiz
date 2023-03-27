@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import AudioPlayer from './AudioPlayer';
 import ResultDialog from './ResultDialog';
-import {Quiz, Track} from '../types/MockQuizObjects';
+import {Quiz, Track} from '@/types/MockQuizObjects';
 
 function getRandomInt(max) {
     const array = new Uint32Array(1);
