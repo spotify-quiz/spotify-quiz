@@ -8,7 +8,7 @@ import {Quiz} from "@/types/MockQuizObjects";
 import styles from "../styles/ScorePage.module.css";
 import QuizPage from "@/pages/QuizPage";
 
-function scorePage({quiz, score}: { quiz: Quiz, score: number }) {
+function ScorePage({quiz, score}: { quiz: Quiz, score: number }) {
     const [playAgain, setPlayAgain] = useState(false);
 
     return playAgain ?
@@ -49,4 +49,4 @@ function scorePage({quiz, score}: { quiz: Quiz, score: number }) {
         </Container>
 }
 
-export default scorePage
+export default ScorePage
