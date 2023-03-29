@@ -1,0 +1,29 @@
+.scorePage {
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play {
+    height: 50px;
+    background-color: #1BD760;
+    border: transparent
+}
+
+.play:hover {
+    background-color: springgreen;
+}
+
+.home {
+    height: 50px;
+    background-color: grey;
+    border: transparent
+}
+
+.home:hover {
+    background-color: lightgray;
+}

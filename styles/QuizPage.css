@@ -1,20 +1,20 @@
-.green-dialog .modal-content {
+.greenDialog .modal-content {
     background-color: mediumseagreen;
     color: white;
     border-radius: 30px;
 }
 
-.green-dialog .dialog-button {
+.greenDialog .dialog-button {
     color: mediumseagreen;
 }
 
-.red-dialog .modal-content {
+.redDialog .modal-content {
     background-color: indianred;
     color: white;
     border-radius: 30px;
 }
 
-.red-dialog .dialog-button {
+.redDialog .dialog-button {
     color: indianred;
 }
 
@@ -24,14 +24,4 @@
     min-height: 100vh;
     font-size: calc(10px + 2vmin);
     color: white;
-}
-
-.choice {
-    height: 60px;
-    background-color: #1BD760;
-    border: transparent
-}
-
-.choice:hover {
-    background-color: springgreen;
 }
