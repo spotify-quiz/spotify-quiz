@@ -26,7 +26,7 @@ function AudioPlayer({
   // Change the togglePlay function to call setStartTimer with a boolean value
   const togglePlay = () => {
     setPlaying(!playing);
-    setStartTimer(true);
+    if (setStartTimer != null) setStartTimer(true);
   };
 
   const [thisVolume, setThisVolume] = useState(volume);
