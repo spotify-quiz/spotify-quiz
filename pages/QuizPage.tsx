@@ -7,6 +7,9 @@ import AudioPlayer from './AudioPlayer';
 import ResultDialog from './ResultDialog';
 import {Quiz, Track} from '@/types/MockQuizObjects';
 
+import styles from "../styles/QuizPage.module.css";
+import ScorePage from "@/pages/scorePage";
+
 function getRandomInt(max) {
     const array = new Uint32Array(1);
     self.crypto.getRandomValues(array);
@@ -130,7 +133,7 @@ function QuizPage({quiz, time}: { quiz: Quiz; time: number }) {
         return <div>Loading...</div>;
     }
 
-    const questions = quiz?.tracks?.items?.length || 0;
+    const questions = quiz?.tracks?.items?.length;
 
     const changeSong = () => {
         if (index === questions - 1) {
@@ -144,10 +147,7 @@ function QuizPage({quiz, time}: { quiz: Quiz; time: number }) {
     };
 
     return done ? (
-        <>
-            <p>Thanks for playing</p>
-            <p>You got {score} scores</p>
-        </>
+        <ScorePage quiz={quiz} score={score} />
     ) : (
         <div className="QuizPage">
             <Container fluid className="d-grid gap-4">
@@ -187,7 +187,7 @@ function QuizPage({quiz, time}: { quiz: Quiz; time: number }) {
                         <Col>
                             <Button
                                 size="lg"
-                                className="choice w-75 rounded-5"
+                                className={`${styles.choice} w-75 rounded-5`}
                                 role="choice-button"
                                 data-testid={i === correctChoice ? -1 : 1}
                                 onClick={() => reviewAnswer(i)}
@@ -200,7 +200,7 @@ function QuizPage({quiz, time}: { quiz: Quiz; time: number }) {
                         <Col>
                             <Button
                                 size="lg"
-                                className="choice w-75 rounded-5"
+                                className={`${styles.choice} w-75 rounded-5`}
                                 role="choice-button"
                                 data-testid={i + 1 === correctChoice ? -1 : 1}
                                 onClick={() => reviewAnswer(i + 1)}
@@ -215,7 +215,7 @@ function QuizPage({quiz, time}: { quiz: Quiz; time: number }) {
             </Container>
 
             <ResultDialog
-                className={correct ? 'green-dialog' : 'red-dialog'}
+                className={correct ? 'greenDialog' : 'redDialog'}
                 title={correct ? 'Correct!' : 'Wrong!'}
                 track={quiz.tracks.items[index].track}
                 show={showDialog}

@@ -1,0 +1,9 @@
+.choice {
+    height: 60px;
+    background-color: #1BD760;
+    border: transparent
+}
+
+.choice:hover {
+    background-color: springgreen;
+}
