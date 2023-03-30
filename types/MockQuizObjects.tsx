@@ -15,17 +15,20 @@ class Song {
   album: Array<Image>;
   preview_url: string;
   artist: string;
+  album_name: string
 
   constructor(
     name: string,
     album: Array<Image>,
     preview_url: string,
-    artist: string
+    artist: string,
+    album_name: string
   ) {
     this.name = name;
     this.album = album;
     this.preview_url = preview_url;
     this.artist = artist;
+    this.album_name = album_name;
   }
 }
 
