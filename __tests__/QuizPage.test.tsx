@@ -4,7 +4,8 @@ import '@testing-library/jest-dom'
 import QuizPage from "@/pages/QuizPage";
 import {setUpMockHTMLMediaElement, generateDummyQuiz, quizPageIsRendered} from "@/utils/setupTest";
 
-const dummy = generateDummyQuiz()
+const dummy = generateDummyQuiz(4)
+const longDummy = generateDummyQuiz(20)
 const time = 60
 
 let playStub: any;
@@ -26,6 +27,10 @@ afterEach(() => {
 describe('test Quiz page', () => {
     test('empty quiz', () => {
         render(<QuizPage quiz={null} time={time} />)
+    })
+
+    test('long quiz', () => {
+        render(<QuizPage quiz={longDummy} time={time} />)
     })
 
     test("all are rendered", () => {

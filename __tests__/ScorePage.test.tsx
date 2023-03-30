@@ -3,7 +3,7 @@ import {generateDummyQuiz, quizPageIsRendered} from "@/utils/setupTest";
 import {fireEvent, render, screen} from "@testing-library/react";
 import ScorePage from "@/pages/scorePage";
 
-const dummy = generateDummyQuiz()
+const dummy = generateDummyQuiz(4)
 
 describe('test score page', () => {
     test('all rendered', () => {

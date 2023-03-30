@@ -5,7 +5,7 @@ import ResultDialog from "@/pages/ResultDialog";
 import {setUpMockHTMLMediaElement, generateDummyQuiz} from "@/utils/setupTest";
 
 // Dummy data
-const dummy = generateDummyQuiz();
+const dummy = generateDummyQuiz(4);
 const dummyTrack = dummy.tracks.items[0]
 
 let dummyShowDialog = true
