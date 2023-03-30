@@ -7,12 +7,25 @@ import {Quiz} from "@/types/MockQuizObjects";
 
 import styles from "../styles/ScorePage.module.css";
 import QuizPage from "@/pages/QuizPage";
+import shuffle from "@/utils/shuffleSong";
+import {useRouter} from "next/router";
 
 function ScorePage({quiz, score}: { quiz: Quiz, score: number }) {
     const [playAgain, setPlayAgain] = useState(false);
 
+    const router = useRouter();
+
+    function redirect() {
+        router.push('/select-playlist?isGuest=true')
+    }
+
+    // shuffle Songs
+    if (quiz) {
+        quiz.tracks.items = shuffle(quiz.tracks.items)
+    }
+
     return playAgain ?
-        <QuizPage quiz={quiz} time={60}/> :
+        <QuizPage quiz={quiz} time={30}/> :
         <Container className={`${styles.scorePage} flex-column`}>
             <Row className="w-75 mb-5 text-center">
                 <h1 style={{fontSize: 60}}>Thank you for playing!</h1>
@@ -41,6 +54,7 @@ function ScorePage({quiz, score}: { quiz: Quiz, score: number }) {
                     <Button
                         size="lg"
                         className={`${styles.home} w-75 rounded-5 mb-3`}
+                        onClick={redirect}
                     >
                         <b>Return Home</b>
                     </Button>

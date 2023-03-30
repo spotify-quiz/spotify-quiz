@@ -23,10 +23,10 @@ function ResultDialog(props: any) {
                 alt="Song"
               />
             </Col>
-            <Col className="d-flex flex-column  justify-content-between">
-              <h3>{props.track?.name}</h3>
-              <h5>{props.track?.artists}</h5>
-              <h5>{props.track?.album?.name}</h5>
+            <Col className="d-flex flex-column justify-content-between">
+              <h2>{props.track?.name}</h2>
+              <h5>{props.track?.artist}</h5>
+              <h5>{props.track?.album_name}</h5>
               <AudioPlayer
                 audio={props.audio}
                 volume={props.volume}
@@ -47,10 +47,10 @@ function ResultDialog(props: any) {
           </Row>
           <Row className="justify-content-center">
             <Button
+                variant="light"
               className="dialog-button w-50 rounded-5"
               size="lg"
               onClick={props.onHide}
-              style={{ backgroundColor: 'white', border: 'transparent' }}
             >
               <b>Close</b>
             </Button>

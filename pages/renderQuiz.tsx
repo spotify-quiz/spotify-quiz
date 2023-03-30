@@ -4,6 +4,7 @@ import QuizPage from './QuizPage';
 import { Item, Quiz, Song, Track, Image } from '../types/MockQuizObjects';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
+import shuffle from "@/utils/shuffleSong";
 
 interface Props {
   accessToken: string | null;
@@ -62,7 +63,9 @@ function RenderQuiz({ accessToken }: Props) {
 
         const playlist = response.data;
 
-        const tracks: Track[] = playlist.tracks.items.map((item: any) => {
+        const tracks: Track[] = playlist.tracks.items
+            .filter((item: any) => item.track.preview_url != null)
+            .map((item: any) => {
           const images = item.track.album.images.map(
             (image: any) => new Image(image.url, image.width, image.height)
           );
@@ -70,7 +73,8 @@ function RenderQuiz({ accessToken }: Props) {
             item.track.name,
             images,
             item.track.preview_url,
-            item.track.artists[0].name
+            item.track.artists[0].name,
+              item.track.album.name
           );
           return new Track(song);
         });
@@ -84,6 +88,10 @@ function RenderQuiz({ accessToken }: Props) {
             )
           : new Image('', 0, 0);
         const fetchedQuiz = new Quiz(playlist.name, image, item);
+
+        // shuffle songs
+        fetchedQuiz.tracks.items = shuffle(fetchedQuiz.tracks.items)
+
         setQuiz(fetchedQuiz);
       } catch (error) {
         console.error(error);
@@ -93,7 +101,7 @@ function RenderQuiz({ accessToken }: Props) {
     fetchPlaylist();
   }, [playlistId, accessToken]);
 
-  return quiz ? <QuizPage quiz={quiz} time={60} /> : <p>Loading...</p>;
+  return quiz ? <QuizPage quiz={quiz} time={30} /> : <p>Loading...</p>;
 }
 
 export const getServerSideProps = async (context) => {
