@@ -20,7 +20,7 @@ export function setUpMockHTMLMediaElement() {
   return [playStub, pauseStub, loadStub];
 }
 
-export function generateDummyQuiz() {
+export function generateDummyQuiz(items: number) {
   const dib = new Image("https://i.scdn.co/image/ab67616d0000b273649e31b49e38add30e78b57d", 640, 640)
   const dim = new Image("https://i.scdn.co/image/ab67616d0000b273649e31b49e38add30e78b57d", 300, 300)
   const dis = new Image("https://i.scdn.co/image/ab67616d0000b273649e31b49e38add30e78b57d", 64, 64)
@@ -33,8 +33,8 @@ export function generateDummyQuiz() {
   ]
   let dss: Track[] = []
 
-  for (let i = 0; i < 4; i++) {
-    const temp = new Song(i.toString(), da, songUrls[i % 3], 'Violette Wautier')
+  for (let i = 0; i < items; i++) {
+    const temp = new Song(i.toString(), da, songUrls[i % 3], 'Violette Wautier', 'album')
     dss.push(new Track(temp))
   }
 
