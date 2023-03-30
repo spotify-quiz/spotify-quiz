@@ -6,8 +6,6 @@ import Row from 'react-bootstrap/Row';
 import Image from 'next/image'
 import AudioPlayer from './AudioPlayer';
 
-import styles from '../styles/QuizPage.module.css'
-
 function ResultDialog(props: any) {
   return (
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter" centered>
