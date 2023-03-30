@@ -133,7 +133,8 @@ function QuizPage({quiz, time}: { quiz: Quiz; time: number }) {
         return <div>Loading...</div>;
     }
 
-    const questions = quiz?.tracks?.items?.length;
+    const quizLength = quiz?.tracks?.items?.length
+    const questions = quizLength > 10? 10 : quizLength;
 
     const changeSong = () => {
         if (index === questions - 1) {
