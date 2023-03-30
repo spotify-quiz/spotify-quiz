@@ -3,6 +3,7 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import '@testing-library/jest-dom'
 import QuizPage from "@/pages/QuizPage";
 import {setUpMockHTMLMediaElement, generateDummyQuiz, quizPageIsRendered} from "@/utils/setupTest";
+import {useRouter} from "next/router";
 
 const dummy = generateDummyQuiz(4)
 const longDummy = generateDummyQuiz(20)
@@ -11,6 +12,14 @@ const time = 60
 let playStub: any;
 let pauseStub: any;
 let loadStub: any;
+
+jest.mock('next/router', () => ({
+    useRouter() {
+        return {
+            pathname: '',
+        };
+    },
+}));
 
 beforeEach(() => {
     const funcs = setUpMockHTMLMediaElement()
