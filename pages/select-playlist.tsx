@@ -205,10 +205,11 @@ export default function SelectPlaylist() {
             value={timeLimit}
             onChange={(e) => setTimeLimit(parseInt(e.target.value))}
           >
+            <option value="3">3 seconds</option>
+            <option value="5">5 seconds</option>
+            <option value="10">10 seconds</option>
+            <option value="15">15 seconds</option>
             <option value="30">30 seconds</option>
-            <option value="60">1 minute</option>
-            <option value="120">2 minutes</option>
-            <option value="180">3 minutes</option>
           </select>
         </div>
         <div>

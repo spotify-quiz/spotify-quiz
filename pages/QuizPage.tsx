@@ -118,6 +118,7 @@ function QuizPage({
       const random = randomChoices(index, quiz);
       setChoices(random.choices);
       setCorrectChoice(random.randomCorrectIndex);
+      setTimer(timeLimit); // reset the timer
     }
   }, [index, quiz]);
 
