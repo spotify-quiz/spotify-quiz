@@ -4,13 +4,15 @@ import QuizPage from './QuizPage';
 import { Item, Quiz, Song, Track, Image } from '../types/MockQuizObjects';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
-import shuffle from "@/utils/shuffleSong";
+import shuffle from '@/utils/shuffleSong';
 
 interface Props {
   accessToken: string | null;
+  timeLimit: number;
+  numQuestions: number;
 }
 
-function RenderQuiz({ accessToken }: Props) {
+function RenderQuiz({ accessToken, timeLimit, numQuestions }: Props) {
   const router = useRouter();
   const { playlistId } = router.query;
   const [quiz, setQuiz] = useState<Quiz | null>(null);
@@ -64,20 +66,21 @@ function RenderQuiz({ accessToken }: Props) {
         const playlist = response.data;
 
         const tracks: Track[] = playlist.tracks.items
-            .filter((item: any) => item.track.preview_url != null)
-            .map((item: any) => {
-          const images = item.track.album.images.map(
-            (image: any) => new Image(image.url, image.width, image.height)
-          );
-          const song = new Song(
-            item.track.name,
-            images,
-            item.track.preview_url,
-            item.track.artists[0].name,
+          .filter((item: any) => item.track.preview_url != null)
+          .slice(0, numQuestions)
+          .map((item: any) => {
+            const images = item.track.album.images.map(
+              (image: any) => new Image(image.url, image.width, image.height)
+            );
+            const song = new Song(
+              item.track.name,
+              images,
+              item.track.preview_url,
+              item.track.artists[0].name,
               item.track.album.name
-          );
-          return new Track(song);
-        });
+            );
+            return new Track(song);
+          });
 
         const item = new Item(tracks);
         const image = playlist.images.length
@@ -90,7 +93,7 @@ function RenderQuiz({ accessToken }: Props) {
         const fetchedQuiz = new Quiz(playlist.name, image, item);
 
         // shuffle songs
-        fetchedQuiz.tracks.items = shuffle(fetchedQuiz.tracks.items)
+        fetchedQuiz.tracks.items = shuffle(fetchedQuiz.tracks.items);
 
         setQuiz(fetchedQuiz);
       } catch (error) {
@@ -101,15 +104,22 @@ function RenderQuiz({ accessToken }: Props) {
     fetchPlaylist();
   }, [playlistId, accessToken]);
 
-  return quiz ? <QuizPage quiz={quiz} time={30} /> : <p>Loading...</p>;
+  return quiz ? (
+    <QuizPage quiz={quiz} timeLimit={timeLimit} numQuestions={numQuestions} />
+  ) : (
+    <p>Loading...</p>
+  );
 }
 
 export const getServerSideProps = async (context) => {
   const { access_token } = parseCookies(context);
+  const { timeLimit, numQuestions } = context.query;
 
   return {
     props: {
       accessToken: access_token || null,
+      timeLimit: parseInt(timeLimit as string) || 60,
+      numQuestions: parseInt(numQuestions as string) || 10,
     },
   };
 };
