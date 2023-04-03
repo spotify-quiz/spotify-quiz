@@ -14,6 +14,9 @@ export default function Logout() {
         'Spotify Logout',
         'width=700,height=500,top=40,left=40'
       );
+      if (spotifyLogoutWindow !== null) {
+        spotifyLogoutWindow.opener = null; // For security reasons
+      }
 
       setTimeout(async () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
