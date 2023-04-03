@@ -12,7 +12,7 @@ export default function Logout() {
       const spotifyLogoutWindow = window.open(
         url,
         'Spotify Logout',
-        'width=700,height=500,top=40,left=40'
+        'width=700,height=500,top=40,left=40,noopener,noreferrer'
       );
 
       setTimeout(async () => {
