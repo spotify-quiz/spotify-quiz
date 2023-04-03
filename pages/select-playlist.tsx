@@ -27,6 +27,8 @@ export default function SelectPlaylist() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const router = useRouter();
   const isGuest = router.query.isGuest === 'true';
+  const [timeLimit, setTimeLimit] = useState<number>(60);
+  const [numQuestions, setNumQuestions] = useState<number>(10);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -157,10 +159,12 @@ export default function SelectPlaylist() {
 
   const goToRenderQuiz = () => {
     if (selectedPlaylist) {
-      console.log('click');
-      router.push(`/renderQuiz?playlistId=${selectedPlaylist.id}`);
+      router.push(
+        `/renderQuiz?playlistId=${selectedPlaylist.id}&timeLimit=${timeLimit}&numQuestions=${numQuestions}`
+      );
     }
   };
+
   return (
     <div className={`${styles.container} bg-gray-800`}>
       <div className={`${styles.font} mt-4`}>
@@ -191,6 +195,38 @@ export default function SelectPlaylist() {
 
       <div className={styles.font} style={{ textAlign: 'center' }}>
         <h1 className="text-white">Select a Playlist:</h1>
+        <div>
+          <label htmlFor="timeLimit" className="text-white mr-2">
+            Time Limit:
+          </label>
+          <select
+            name="timeLimit"
+            id="timeLimit"
+            value={timeLimit}
+            onChange={(e) => setTimeLimit(parseInt(e.target.value))}
+          >
+            <option value="30">30 seconds</option>
+            <option value="60">1 minute</option>
+            <option value="120">2 minutes</option>
+            <option value="180">3 minutes</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="numQuestions" className="text-white mr-2">
+            Number of Questions:
+          </label>
+          <select
+            name="numQuestions"
+            id="numQuestions"
+            value={numQuestions}
+            onChange={(e) => setNumQuestions(parseInt(e.target.value))}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </div>
         <div
           style={{
             display: 'flex',
@@ -199,9 +235,10 @@ export default function SelectPlaylist() {
             gap: '1rem',
           }}
         >
-          {filteredPlaylists.map((playlist) => (
+          {filteredPlaylists.map((playlist, index) => (
             <div
               key={playlist.id}
+              data-testid={`playlist-${index}`}
               onClick={() => selectPlaylist(playlist)}
               style={{
                 width: '150px',
