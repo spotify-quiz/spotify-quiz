@@ -235,9 +235,10 @@ export default function SelectPlaylist() {
             gap: '1rem',
           }}
         >
-          {filteredPlaylists.map((playlist) => (
+          {filteredPlaylists.map((playlist, index) => (
             <div
               key={playlist.id}
+              data-testid={`playlist-${index}`}
               onClick={() => selectPlaylist(playlist)}
               style={{
                 width: '150px',

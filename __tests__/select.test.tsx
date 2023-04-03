@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SelectPlaylist from '../pages/select-playlist';
 import mockRouter from 'next-router-mock';
 
@@ -21,6 +21,7 @@ describe('SelectPlaylist component', () => {
 
     expect(pushMock).toHaveBeenCalledWith('/');
   });
+
   it('should log out when the Logout button is clicked', () => {
     // Mock localStorage.removeItem
     Storage.prototype.removeItem = jest.fn();
@@ -32,6 +33,7 @@ describe('SelectPlaylist component', () => {
 
     expect(Storage.prototype.removeItem).toHaveBeenCalledWith('access_token');
   });
+
   it('should disable the Submit button if no playlist is selected', () => {
     render(<SelectPlaylist />);
 
