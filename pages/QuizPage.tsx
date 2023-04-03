@@ -89,7 +89,7 @@ function QuizPage({
     audio?.load();
     setPlaying(false);
     setStartTimer(false);
-    setTimer(timer);
+    setTimer((prevTimer) => prevTimer - 1);
 
     if (value === correctChoice) {
       setCorrect(true);
