@@ -1,9 +1,4 @@
 import {test, expect, Page, Locator} from '@playwright/test';
-import {google} from "google-gax/build/protos/locations";
-import location = google.cloud.location;
-
-// Write a playwright test to check for a button
-// with the text "Continue as Guest" and click it.
 
 class HomePage {
     page: Page
@@ -88,8 +83,8 @@ test.describe("Playlist Page selection tests", () => {
         const playlistName = await playlistImg.getAttribute("alt")
 
         await playlistDiv.click()
+
         // @ts-ignore
         await expect(page.getByText(playlistName)).toBeVisible()
-
     })
 })
