@@ -46,6 +46,17 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Run your tests
+        run: npx playwright test
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report
+
       - name: SonarQube Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
