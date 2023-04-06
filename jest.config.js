@@ -11,7 +11,7 @@ const customJestConfig = {
     coverageReporters: ['text', 'cobertura', 'lcov'],
     testMatch: [
       "**/__tests__/**/?(*._)+(spec|test).[jt]s?(x)",
-       // "**/?(*.)+(spec|test).[tj]s?(x)"
+        "**/__tests__/**?(*.)+(spec|test).[tj]s?(x)"
     ],
     preset: 'ts-jest',
     testPathIgnorePatterns: ['/node_modules/', '/.next/'],
