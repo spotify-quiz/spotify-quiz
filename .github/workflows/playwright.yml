@@ -49,6 +49,9 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
 
+      - name: Build server
+        run: npm run build
+
       - name: Run playwright tests
         run: npx playwright test
 
