@@ -49,7 +49,7 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
 
-      - name: Run your tests
+      - name: Run playwright tests
         run: npx playwright test
 
       - name: Upload test results
