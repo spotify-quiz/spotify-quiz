@@ -170,7 +170,7 @@ export default function SelectPlaylist() {
       <div className={`${styles.font} mt-4`}>
         {isGuest ? (
           <button
-              className = {`${styles.goback}`}
+            className="text-white mr-4 px-4 py-2 rounded-lg"
             onClick={handleGoBack}
           >
             Go Back
@@ -178,7 +178,7 @@ export default function SelectPlaylist() {
         ) : (
           <>
             <button
-                className = {`${styles.goback}`}
+              className="text-white mr-4 px-4 py-2 rounded-lg"
               onClick={handleGoBack}
             >
               Go Back
@@ -192,21 +192,42 @@ export default function SelectPlaylist() {
           </>
         )}
       </div>
-      <div style={{ textAlign: 'center' }}>
-        <header className={styles.pageheader}>
-          <h1>
 
-            Welcome To Quiz Me
-
-          </h1>
-        </header>
-      </div>
-
-      <div
-          className={styles.font}
-          style={{ textAlign: 'center' }}>
-        <h1 className="text-white">Choose Your playlist:</h1>
-
+      <div className={styles.font} style={{ textAlign: 'center' }}>
+        <h1 className="text-white">Select a Playlist:</h1>
+        <div>
+          <label htmlFor="timeLimit" className="text-white mr-2">
+            Time Limit:
+          </label>
+          <select
+            name="timeLimit"
+            id="timeLimit"
+            value={timeLimit}
+            onChange={(e) => setTimeLimit(parseInt(e.target.value))}
+          >
+            <option value="3">3 seconds</option>
+            <option value="5">5 seconds</option>
+            <option value="10">10 seconds</option>
+            <option value="15">15 seconds</option>
+            <option value="30">30 seconds</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="numQuestions" className="text-white mr-2">
+            Number of Questions:
+          </label>
+          <select
+            name="numQuestions"
+            id="numQuestions"
+            value={numQuestions}
+            onChange={(e) => setNumQuestions(parseInt(e.target.value))}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </div>
         <div
           style={{
             display: 'flex',
@@ -238,47 +259,12 @@ export default function SelectPlaylist() {
             </div>
           ))}
         </div>
-        <div className={styles.settings_box}>
-        <div>
-          <label htmlFor="timeLimit" className="text-black mr-2">
-            Time Limit:
-          </label>
-          <select
-              name="timeLimit"
-              id="timeLimit"
-              value={timeLimit}
-              onChange={(e) => setTimeLimit(parseInt(e.target.value))}
-          >
-            <option value="3">3 seconds</option>
-            <option value="5">5 seconds</option>
-            <option value="10">10 seconds</option>
-            <option value="15">15 seconds</option>
-            <option value="30">30 seconds</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="numQuestions" className="text-black mr-2">
-            Number of Questions:
-          </label>
-          <select
-              name="numQuestions"
-              id="numQuestions"
-              value={numQuestions}
-              onChange={(e) => setNumQuestions(parseInt(e.target.value))}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-          </select>
-        </div>
-        </div>
         <button
-          // className={`mt-4 ${
-          //   selectedPlaylist
-          //     ? 'text-white px-4 py-2 bg-green-500 rounded-lg'
-          //     : 'text-white px-4 py-2 opacity-50 bg-green-500 rounded-lg'
-          // } text-white`}
-            className = {styles.submit}
+          className={`mt-4 ${
+            selectedPlaylist
+              ? 'text-white px-4 py-2 bg-green-500 rounded-lg'
+              : 'text-white px-4 py-2 opacity-50 bg-green-500 rounded-lg'
+          } text-white`}
           onClick={goToRenderQuiz}
           disabled={!selectedPlaylist}
         >
