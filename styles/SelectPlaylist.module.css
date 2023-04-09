@@ -98,17 +98,15 @@
   background: #1BD760;
   border-radius: 999px;
 
-  /* Inside auto layout */
+
 
   flex: none;
   order: 0;
   flex-grow: 0;
 
   position: absolute;
-  left: 85.1%;
-  right: 10.25%;
-  top: 13.33%;
-  bottom: 77.78%;
+  top: 10px;
+  right: 10px;
 
 }
 
@@ -130,7 +128,7 @@
   font-weight: 900;
   font-size: 36px;
   line-height: 100%;
-  /* or 36px */
+
 
   display: flex;
   align-items: center;
@@ -158,12 +156,9 @@
   flex: none;
   order: 0;
   flex-grow: 0;
+  bottom: 5vh;
+  margin-top: 10px;
 
-  position: absolute;
-  left: 85.1%;
-  right: 10.25%;
-  top: 80.64%;
-  bottom: 12.97%;
 
 }
 .submit:hover{
@@ -171,14 +166,19 @@
 }
 .settings_box{
   color: black;
-  font-size: 1.0rem;
+  font-size: 0.5rem;
   font-weight: bold;
-  position: absolute;
+  position: center;
   width: 276px;
-  height: 60px;
-  left: 770px;
-  top: 800px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 10%;
+  left: 50%;
+
 
   background: #1BD760;
   border-radius: 60px;
+  margin-top: 10px ;
 }
