@@ -192,15 +192,15 @@ export default function SelectPlaylist() {
               </>
           )}
         </div>
-        <div style={{ textAlign: 'center' }}>
-          <header className={styles.pageheader}>
-            <h1>
+        {/*<div style={{ textAlign: 'center' }}>*/}
+        {/*  <header className={styles.pageheader}>*/}
+        {/*    <h1>*/}
 
-              Welcome To Quiz Me
+        {/*      Welcome To Quiz Me*/}
 
-            </h1>
-          </header>
-        </div>
+        {/*    </h1>*/}
+        {/*  </header>*/}
+        {/*</div>*/}
 
         <div
             className={styles.font}
@@ -238,52 +238,8 @@ export default function SelectPlaylist() {
                 </div>
             ))}
           </div>
-          <div className={styles.settings_box}>
-            <div>
-              <label htmlFor="timeLimit" className="text-black mr-2">
-                Time Limit:
-              </label>
-              <select
-                  name="timeLimit"
-                  id="timeLimit"
-                  value={timeLimit}
-                  onChange={(e) => setTimeLimit(parseInt(e.target.value))}
-              >
-                <option value="3">3 seconds</option>
-                <option value="5">5 seconds</option>
-                <option value="10">10 seconds</option>
-                <option value="15">15 seconds</option>
-                <option value="30">30 seconds</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="numQuestions" className="text-black mr-2">
-                Number of Questions:
-              </label>
-              <select
-                  name="numQuestions"
-                  id="numQuestions"
-                  value={numQuestions}
-                  onChange={(e) => setNumQuestions(parseInt(e.target.value))}>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-              </select>
-            </div>
-          </div>
-          <button
-              // className={`mt-4 ${
-              //   selectedPlaylist
-              //     ? 'text-white px-4 py-2 bg-green-500 rounded-lg'
-              //     : 'text-white px-4 py-2 opacity-50 bg-green-500 rounded-lg'
-              // } text-white`}
-              className = {styles.submit}
-              onClick={goToRenderQuiz}
-              disabled={!selectedPlaylist}
-          >
-            Submit
-          </button>
+
+
         </div>
         {selectedPlaylist && (
             <div className={`${styles.font} text-white`}>
@@ -307,6 +263,49 @@ export default function SelectPlaylist() {
               </div>
             </div>
         )}
-      </div>
+          {/*<div className={styles.container}>*/}
+              <div className={styles.settings_box}>
+                  <div>
+                      <label htmlFor="timeLimit" className="text-black mr-2">
+                          Time Limit:
+                      </label>
+                      <select
+                          name="timeLimit"
+                          id="timeLimit"
+                          value={timeLimit}
+                          onChange={(e) => setTimeLimit(parseInt(e.target.value))}
+                      >
+                          <option value="3">3 seconds</option>
+                          <option value="5">5 seconds</option>
+                          <option value="10">10 seconds</option>
+                          <option value="15">15 seconds</option>
+                          <option value="30">30 seconds</option>
+                      </select>
+                  </div>
+                  <div>
+                      <label htmlFor="numQuestions" className="text-black mr-2">
+                          Number of Questions:
+                      </label>
+                      <select
+                          name="numQuestions"
+                          id="numQuestions"
+                          value={numQuestions}
+                          onChange={(e) => setNumQuestions(parseInt(e.target.value))}>
+                          <option value="5">5</option>
+                          <option value="10">10</option>
+                          <option value="15">15</option>
+                          <option value="20">20</option>
+                      </select>
+                  </div>
+              </div>
+          <button
+              className = {styles.submit}
+              onClick={goToRenderQuiz}
+              disabled={!selectedPlaylist}
+          >
+              Submit
+          </button>
+          </div>
+       // </div>
   );
 }
