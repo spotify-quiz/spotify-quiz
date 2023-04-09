@@ -192,15 +192,6 @@ export default function SelectPlaylist() {
               </>
           )}
         </div>
-        {/*<div style={{ textAlign: 'center' }}>*/}
-        {/*  <header className={styles.pageheader}>*/}
-        {/*    <h1>*/}
-
-        {/*      Welcome To Quiz Me*/}
-
-        {/*    </h1>*/}
-        {/*  </header>*/}
-        {/*</div>*/}
 
         <div
             className={styles.font}
@@ -263,7 +254,6 @@ export default function SelectPlaylist() {
               </div>
             </div>
         )}
-          {/*<div className={styles.container}>*/}
               <div className={styles.settings_box}>
                   <div>
                       <label htmlFor="timeLimit" className="text-black mr-2">
@@ -306,6 +296,5 @@ export default function SelectPlaylist() {
               Submit
           </button>
           </div>
-       // </div>
   );
 }

@@ -98,17 +98,12 @@
   background: #1BD760;
   border-radius: 999px;
 
-  /* Inside auto layout */
+
 
   flex: none;
   order: 0;
   flex-grow: 0;
 
-  /*position: absolute;*/
-  /*left: 85.1%;*/
-  /*right: 10.25%;*/
-  /*top: 13.33%;*/
-  /*bottom: 77.78%;*/
   position: absolute;
   top: 10px;
   right: 10px;
@@ -133,7 +128,7 @@
   font-weight: 900;
   font-size: 36px;
   line-height: 100%;
-  /* or 36px */
+
 
   display: flex;
   align-items: center;
@@ -161,10 +156,7 @@
   flex: none;
   order: 0;
   flex-grow: 0;
-
-  /*position: absolute;*/
   bottom: 5vh;
-  /*right: 10px;*/
   margin-top: 10px;
 
 
@@ -182,10 +174,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /*height: 10vh;*/
   top: 10%;
   left: 50%;
-  /*transform: translate(-50%, -50%);*/
+
 
   background: #1BD760;
   border-radius: 60px;
