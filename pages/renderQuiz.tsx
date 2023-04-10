@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import QuizPage from './QuizPage';
 import { Item, Quiz, Song, Track, Image } from '../types/MockQuizObjects';
 import axios from 'axios';
-import { parseCookies } from 'nookies';
 import shuffle from '@/utils/shuffleSong';
 
 interface Props {
@@ -64,7 +63,6 @@ function RenderQuiz({ accessToken, timeLimit, numQuestions }: Props) {
         }
 
         const playlist = response.data;
-
         const tracks: Track[] = playlist.tracks.items
           .filter((item: any) => item.track.preview_url != null)
           .slice(0, numQuestions)
@@ -87,8 +85,7 @@ function RenderQuiz({ accessToken, timeLimit, numQuestions }: Props) {
           ? new Image(
               playlist.images[0].url,
               playlist.images[0].width,
-              playlist.images[0].height
-            )
+              playlist.images[0].height)
           : new Image('', 0, 0);
         const fetchedQuiz = new Quiz(playlist.name, image, item);
 
@@ -110,18 +107,5 @@ function RenderQuiz({ accessToken, timeLimit, numQuestions }: Props) {
     <p>Loading...</p>
   );
 }
-
-export const getServerSideProps = async (context) => {
-  const { access_token } = parseCookies(context);
-  const { timeLimit, numQuestions } = context.query;
-
-  return {
-    props: {
-      accessToken: access_token || null,
-      timeLimit: parseInt(timeLimit as string) || 60,
-      numQuestions: parseInt(numQuestions as string) || 10,
-    },
-  };
-};
 
 export default RenderQuiz;

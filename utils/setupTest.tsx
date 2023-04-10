@@ -44,9 +44,46 @@ export function generateDummyQuiz(items: number) {
   return dummy;
 }
 
-export function quizPageIsRendered() {
-  expect(screen.getByText('1.')).toBeInTheDocument()
-  expect(screen.getByText('Score : 0')).toBeInTheDocument()
-  expect(screen.getByText('Play')).toBeInTheDocument()
-  expect(screen.getAllByRole('choice-button').length).not.toBe(0)
+export async function quizPageIsRendered() {
+  // expect(screen.getByText('1.')).toBeInTheDocument()
+  // expect(screen.getByText('Score : 0')).toBeInTheDocument()
+  // expect(screen.getByText('Play')).toBeInTheDocument()
+  // expect(screen.getAllByRole('choice-button').length).not.toBe(0)
+  expect(await screen.findByText('1.')).toBeInTheDocument()
+  expect(await screen.findByText('Score : 0')).toBeInTheDocument()
+  expect(await screen.findByText('Play')).toBeInTheDocument()
+  expect(await screen.findAllByRole('choice-button').length).not.toBe(0)
+}
+
+export function generateDummyPlaylistResponse(amount: number) {
+  const track = {
+    "track": {
+      "album": {
+        "images": [
+          {
+            "url": "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228",
+            "height": 300,
+            "width": 300
+          }
+        ],
+        "name": "string",
+      },
+      "artists": [
+        {
+          "name": "string",
+        }
+      ],
+      "name": "string",
+      "preview_url": "string",
+    }
+  }
+
+  const tracks = []
+  for (let i=0; i<amount; i++) {
+    tracks.push(track)
+  }
+
+  return {
+      items: tracks
+    }
 }
