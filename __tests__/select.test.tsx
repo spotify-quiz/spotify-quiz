@@ -9,6 +9,7 @@ jest.mock('next/router', () => require('next-router-mock'));
 describe('SelectPlaylist component', () => {
   afterEach(() => {
     jest.clearAllMocks();
+    jest.useRealTimers();
   });
 
   it('should go back when the Go Back button is clicked', async () => {
@@ -349,5 +350,73 @@ describe('SelectPlaylist component', () => {
     expect(mockRouter.push).toHaveBeenCalledWith(
       '/renderQuiz?playlistId=123&timeLimit=10&numQuestions=15'
     );
+  });
+  it('should log error when there is a problem fetching featured playlists', async () => {
+    const axiosGetMock = jest
+      .spyOn(axios, 'get')
+      .mockRejectedValue(new Error('Error fetching featured playlists'));
+    const consoleErrorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    mockRouter.query.isGuest = 'true';
+    render(<SelectPlaylist />);
+
+    await waitFor(() => {
+      expect(axiosGetMock).toHaveBeenCalled();
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      new Error('Error fetching featured playlists')
+    );
+
+    consoleErrorSpy.mockRestore();
+  });
+  it('should log error when there is a problem fetching user playlists', async () => {
+    const axiosGetMock = jest
+      .spyOn(axios, 'get')
+      .mockRejectedValue(new Error('Error fetching user playlists'));
+    const consoleErrorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    mockRouter.query.isGuest = 'false';
+    render(<SelectPlaylist />);
+
+    await waitFor(() => {
+      expect(axiosGetMock).toHaveBeenCalled();
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      new Error('Error fetching user playlists')
+    );
+
+    consoleErrorSpy.mockRestore();
+  });
+  it('should close the logout window and navigate to the home page after 1500ms on logout button click', () => {
+    jest.useFakeTimers();
+
+    // Add a mock implementation for window.open
+    const closeMock = jest.fn();
+    const windowOpenMock = jest.spyOn(window, 'open').mockImplementation(() => {
+      const partialWindowMock: Partial<Window> = {
+        close: closeMock,
+      };
+      return partialWindowMock as Window;
+    });
+
+    render(<SelectPlaylist />);
+
+    // Simulate a click event on the logout button
+    fireEvent.click(screen.getByTestId('logout-button'));
+
+    // Advance the timers by 1500ms
+    jest.advanceTimersByTime(1500);
+
+    expect(windowOpenMock).toHaveBeenCalled();
+    expect(closeMock).toHaveBeenCalled();
+    expect(mockRouter.push).toHaveBeenCalledWith('/');
+
+    jest.useRealTimers();
   });
 });
