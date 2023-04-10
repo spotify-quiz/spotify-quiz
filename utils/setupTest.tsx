@@ -45,14 +45,11 @@ export function generateDummyQuiz(items: number) {
 }
 
 export async function quizPageIsRendered() {
-  // expect(screen.getByText('1.')).toBeInTheDocument()
-  // expect(screen.getByText('Score : 0')).toBeInTheDocument()
-  // expect(screen.getByText('Play')).toBeInTheDocument()
-  // expect(screen.getAllByRole('choice-button').length).not.toBe(0)
   expect(await screen.findByText('1.')).toBeInTheDocument()
   expect(await screen.findByText('Score : 0')).toBeInTheDocument()
   expect(await screen.findByText('Play')).toBeInTheDocument()
-  expect(await screen.findAllByRole('choice-button').length).not.toBe(0)
+  const buttons = await screen.findAllByRole('choice-button')
+  expect(buttons.length).not.toBe(0)
 }
 
 export function generateDummyPlaylistResponse(amount: number) {
@@ -78,7 +75,7 @@ export function generateDummyPlaylistResponse(amount: number) {
     }
   }
 
-  const tracks = []
+  const tracks: any = []
   for (let i=0; i<amount; i++) {
     tracks.push(track)
   }
