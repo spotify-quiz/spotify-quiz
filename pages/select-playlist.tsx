@@ -27,7 +27,7 @@ export default function SelectPlaylist() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const router = useRouter();
   const isGuest = router.query.isGuest === 'true';
-  const [timeLimit, setTimeLimit] = useState<number>(60);
+  const [timeLimit, setTimeLimit] = useState<number>(3);
   const [numQuestions, setNumQuestions] = useState<number>(10);
 
   useEffect(() => {

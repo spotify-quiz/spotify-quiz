@@ -7,14 +7,15 @@ import shuffle from '@/utils/shuffleSong';
 
 interface Props {
   accessToken: string | null;
-  timeLimit: number;
-  numQuestions: number;
 }
 
-function RenderQuiz({ accessToken, timeLimit, numQuestions }: Props) {
+function RenderQuiz({ accessToken }: Props) {
   const router = useRouter();
-  const { playlistId } = router.query;
+  const { playlistId, timeLimit, numQuestions } = router.query;
   const [quiz, setQuiz] = useState<Quiz | null>(null);
+
+  const timeLimitNum: number = parseInt(timeLimit as string, 10)
+  const numQuestionsNum: number = parseInt(numQuestions as string, 10)
 
   useEffect(() => {
     const fetchPlaylist = async () => {
@@ -65,7 +66,6 @@ function RenderQuiz({ accessToken, timeLimit, numQuestions }: Props) {
         const playlist = response.data;
         const tracks: Track[] = playlist.tracks.items
           .filter((item: any) => item.track.preview_url != null)
-          .slice(0, numQuestions)
           .map((item: any) => {
             const images = item.track.album.images.map(
               (image: any) => new Image(image.url, image.width, image.height)
@@ -91,6 +91,7 @@ function RenderQuiz({ accessToken, timeLimit, numQuestions }: Props) {
 
         // shuffle songs
         fetchedQuiz.tracks.items = shuffle(fetchedQuiz.tracks.items);
+        fetchedQuiz.tracks.items.slice(0, numQuestionsNum)
 
         setQuiz(fetchedQuiz);
       } catch (error) {
@@ -102,7 +103,7 @@ function RenderQuiz({ accessToken, timeLimit, numQuestions }: Props) {
   }, [playlistId, accessToken]);
 
   return quiz ? (
-    <QuizPage quiz={quiz} timeLimit={timeLimit} numQuestions={numQuestions} />
+    <QuizPage quiz={quiz} timeLimit={timeLimitNum} numQuestions={numQuestionsNum} />
   ) : (
     <p>Loading...</p>
   );
