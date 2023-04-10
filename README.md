@@ -1,5 +1,7 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
+# Spotify Quiz
+![CI](https://github.com/spotify-quiz/spotify-quiz/actions/workflows/playwright.yml/badge.svg)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=spotify-quiz_spotify-quiz&metric=coverage)](https://sonarcloud.io/summary/new_code?id=spotify-quiz_spotify-quiz)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=spotify-quiz_spotify-quiz&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=spotify-quiz_spotify-quiz)
 ## Getting Started
 
 First, run the development server:
