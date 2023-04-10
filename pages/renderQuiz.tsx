@@ -91,7 +91,7 @@ function RenderQuiz({ accessToken }: Props) {
 
         // shuffle songs
         fetchedQuiz.tracks.items = shuffle(fetchedQuiz.tracks.items);
-        fetchedQuiz.tracks.items.slice(0, numQuestionsNum)
+        const _ = fetchedQuiz.tracks.items.slice(0, numQuestionsNum)
 
         setQuiz(fetchedQuiz);
       } catch (error) {
