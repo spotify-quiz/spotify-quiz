@@ -2,10 +2,13 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../styles/Login.module.css';
 
+
 const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
 const REDIRECT_URI = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI as string;
 const CLIENT_ID = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID as string;
 const SCOPE = 'user-library-read playlist-read-private';
+
+
 
 export default function Login() {
   const router = useRouter();
@@ -37,14 +40,14 @@ export default function Login() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Welcome to My Spotify App</h1>
-      <button className={styles.button} onClick={handleLogin}>
-        Log in with Spotify
-      </button>
-      <button className={styles.button} onClick={handleGuestLogin}>
-        Continue as Guest
-      </button>
-    </div>
+      <div className={styles.container}>
+        <img src ="./images/Quizme.png" width={800} height={800}/>
+        <button className={styles.button} onClick={handleLogin}>
+          Log in with Spotify
+        </button>
+        <button className={styles.button} onClick={handleGuestLogin}>
+          Continue as Guest
+        </button>
+      </div>
   );
 }
