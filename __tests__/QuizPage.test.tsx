@@ -7,7 +7,6 @@ import {
   generateDummyQuiz,
   quizPageIsRendered,
 } from '@/utils/setupTest';
-import { useRouter } from 'next/router';
 
 const dummy = generateDummyQuiz(4);
 const longDummy = generateDummyQuiz(20);
@@ -55,16 +54,16 @@ describe('test Quiz page', () => {
     );
   });
 
-  test('all are rendered', () => {
+  test('all are rendered', async () => {
     render(
-      <QuizPage
-        quiz={dummy}
-        timeLimit={timeLimit}
-        numQuestions={numQuestions}
-      />
+        <QuizPage
+            quiz={dummy}
+            timeLimit={timeLimit}
+            numQuestions={numQuestions}
+        />
     );
 
-    quizPageIsRendered();
+    await quizPageIsRendered();
   });
 
   test("game won't start until first audio play", () => {
