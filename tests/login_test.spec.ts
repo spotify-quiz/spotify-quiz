@@ -115,8 +115,12 @@ test.describe("Playlist Page selection tests", () => {
         await playlistPage.navigate()
 
         const playlistDiv = page.getByTestId("playlist-0").first()
-        const playlistImg = playlistPage.selectFirstPlaylistImage()
-        const playlistName = await playlistImg.getAttribute("alt")
+
+        //const playlistImg = playlistPage.selectFirstPlaylistImage()
+        //const playlistName = await playlistImg.getAttribute("alt")
+
+        const playlistImg = await playlistPage.selectFirstPlaylistImage()
+        const playlistName = await playlistImg.evaluate(e => (e as HTMLImageElement).alt)
 
         await playlistDiv.click()
 
