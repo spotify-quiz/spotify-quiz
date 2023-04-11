@@ -1,5 +1,14 @@
 import {test, expect, Page, Locator} from '@playwright/test';
 
+
+const TIME_LIMITS = [
+    '3 seconds', '5 seconds', '10 seconds', '15 seconds', '30 seconds'
+]
+
+const NUM_QUESTIONS = [
+    '5', '10', '15', '20'
+]
+
 class HomePage {
     page: Page
     constructor(page: Page) {
@@ -33,6 +42,33 @@ class PlaylistPage {
 
     selectFirstPlaylistImage(): Locator {
         return this.page.locator('//div[@data-testid="playlist-0"]//img').first()
+    }
+
+    async changeTimeLimit(option) {
+        await this.page.locator('//select[@name="timeLimit"]').selectOption(option)
+    }
+
+    async changeNumQuestions(option) {
+        await this.page.locator('//select[@name="numQuestions"]').selectOption(option)
+    }
+}
+
+class QuizPage{
+    page: Page
+    constructor(page: Page) {
+        this.page = page;
+    }
+    async navigate(playlistPage: PlaylistPage, timeLimitOption, numQuestionsOption): Promise<void> {
+        await playlistPage.navigate()
+        await playlistPage.selectFirstPlaylist().click()
+
+        await this.selectQuizOptions(playlistPage, timeLimitOption, numQuestionsOption)
+        await playlistPage.page.getByText("Submit").first().click()
+    }
+
+    async selectQuizOptions(playlistPage, timeLimitOption, numQuestionsOption) {
+        await playlistPage.changeTimeLimit(timeLimitOption)
+        await playlistPage.changeNumQuestions(numQuestionsOption)
     }
 }
 
@@ -74,7 +110,7 @@ test.describe("Playlist Page selection tests", () => {
         page = await browser.newPage()
     })
 
-    test('selecting a playlist should show the songs in the playlist', async () => {
+    test('selecting a playlist should show songs', async () => {
         const playlistPage = new PlaylistPage(page)
         await playlistPage.navigate()
 
@@ -85,6 +121,31 @@ test.describe("Playlist Page selection tests", () => {
         await playlistDiv.click()
 
         // @ts-ignore
-        await expect(page.getByText(playlistName)).toBeVisible()
+        await expect(page.getByText(playlistName)).toBeVisible() // songs in playlist should be visible
     })
+
+    test('selecting a playlist and submitting should lead to quiz page', async () => {
+        const playlistPage = new PlaylistPage(page)
+        await playlistPage.navigate()
+
+
+        await playlistPage.page.getByTestId("playlist-0").first().click()
+        const playlistId = await playlistPage.selectFirstPlaylistImage().getAttribute("data-playlist-id")
+        await playlistPage.page.getByText("Submit").first().click()
+
+        await page.waitForLoadState('networkidle')
+
+        await expect(page).toHaveURL(/.*renderQuiz.*/)
+    })
+
+    test('selecting a playlist with options should to the quiz page with selected options', async () => {
+        const playlistPage = new PlaylistPage(page)
+        await playlistPage.navigate()
+
+        const quizPage = new QuizPage(page)
+        await quizPage.navigate(playlistPage, TIME_LIMITS[0], NUM_QUESTIONS[0])
+
+        await expect(page).toHaveURL(/.*renderQuiz.*/)
+    })
+
 })
