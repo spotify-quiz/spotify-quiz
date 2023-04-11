@@ -1,5 +1,9 @@
-import {test, expect, Page, Locator} from '@playwright/test';
+import {test, expect, Page, Locator, defineConfig} from '@playwright/test';
 
+
+export default defineConfig({
+    timeout: 10000
+});
 
 const TIME_LIMITS = [
     '3 seconds', '5 seconds', '10 seconds', '15 seconds', '30 seconds'
@@ -32,10 +36,6 @@ class PlaylistPage {
     constructor(page: Page) {
         this.page = page;
     }
-    async navigate(): Promise<void> {
-        await this.page.goto('http://localhost:3000/select-playlist?isGuest=true');
-    }
-
     selectFirstPlaylist(): Locator {
         return this.page.locator('//div[@data-testid="playlist-0"]').first()
     }
@@ -59,7 +59,6 @@ class QuizPage{
         this.page = page;
     }
     async navigate(playlistPage: PlaylistPage, timeLimitOption, numQuestionsOption): Promise<void> {
-        await playlistPage.navigate()
         await playlistPage.selectFirstPlaylist().click()
 
         await this.selectQuizOptions(playlistPage, timeLimitOption, numQuestionsOption)
@@ -108,11 +107,15 @@ test.describe("Playlist Page selection tests", () => {
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage()
+
     })
 
     test('selecting a playlist should show songs', async () => {
-        const playlistPage = new PlaylistPage(page)
-        await playlistPage.navigate()
+        const homePage = new HomePage(page)
+        await homePage.navigate()
+
+        await homePage.getContinueAsGuestButton().click()
+        const playlistPage = new PlaylistPage(homePage.page)
 
         const playlistDiv = page.getByTestId("playlist-0").first()
 
@@ -129,8 +132,11 @@ test.describe("Playlist Page selection tests", () => {
     })
 
     test('selecting a playlist and submitting should lead to quiz page', async () => {
-        const playlistPage = new PlaylistPage(page)
-        await playlistPage.navigate()
+        const homePage = new HomePage(page)
+        await homePage.navigate()
+
+        await homePage.getContinueAsGuestButton().click()
+        const playlistPage = new PlaylistPage(homePage.page)
 
 
         await playlistPage.page.getByTestId("playlist-0").first().click()
@@ -143,8 +149,11 @@ test.describe("Playlist Page selection tests", () => {
     })
 
     test('selecting a playlist with options should to the quiz page with selected options 3s, 10q', async () => {
-        const playlistPage = new PlaylistPage(page)
-        await playlistPage.navigate()
+        const homePage = new HomePage(page)
+        await homePage.navigate()
+
+        await homePage.getContinueAsGuestButton().click()
+        const playlistPage = new PlaylistPage(homePage.page)
 
         const quizPage = new QuizPage(page)
         await quizPage.navigate(playlistPage, TIME_LIMITS[0], NUM_QUESTIONS[1])
