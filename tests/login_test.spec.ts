@@ -138,14 +138,25 @@ test.describe("Playlist Page selection tests", () => {
         await expect(page).toHaveURL(/.*renderQuiz.*/)
     })
 
-    test('selecting a playlist with options should to the quiz page with selected options', async () => {
+    test('selecting a playlist with options should to the quiz page with selected options 3s, 10q', async () => {
         const playlistPage = new PlaylistPage(page)
         await playlistPage.navigate()
 
         const quizPage = new QuizPage(page)
-        await quizPage.navigate(playlistPage, TIME_LIMITS[0], NUM_QUESTIONS[0])
+        await quizPage.navigate(playlistPage, TIME_LIMITS[0], NUM_QUESTIONS[1])
 
         await expect(page).toHaveURL(/.*renderQuiz.*/)
+
+        await expect(page).toHaveURL(/.*timeLimit=3.*/)
+        await expect(page).toHaveURL(/.*numQuestions=10.*/)
+
+        await expect(page.getByText("Time : 3")).toBeVisible()
+
+        const playButton = page.getByText("Play").first()
+        await expect(playButton).toBeVisible()
+
+        await playButton.click()
+        await expect(page.getByText("Wrong!")).toBeVisible()
     })
 
 })
