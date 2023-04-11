@@ -64,13 +64,12 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Setup env file
-        run: |
-          echo "${{ secrets.NEXT_PUBLIC_SPOTIFY_CLIENT_ID }}" > .env
-          echo "${{ secrets.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET }}" > .env
-          echo "${{ secrets.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI }}" > .env
       - name: Run Playwright tests
         run: npx playwright test
+        env:
+            NEXT_PUBLIC_SPOTIFY_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_SPOTIFY_CLIENT_ID }}
+            NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET: ${{ secrets.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET }}
+            NEXT_PUBLIC_SPOTIFY_REDIRECT_URI: ${{ secrets.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
