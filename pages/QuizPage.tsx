@@ -94,7 +94,7 @@ function QuizPage({
     if (value === correctChoice) {
       setCorrect(true);
       setShowDialog(true);
-      const newScore = timer * 5;
+      const newScore = Math.floor(timer/timeLimit * 200);
       setAddedScore(newScore);
       setScore(score + newScore);
     } else {
