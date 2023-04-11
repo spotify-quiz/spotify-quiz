@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    Playwright Test:
+    Playwright-Test:
       timeout-minutes: 60
       runs-on: ubuntu-latest
       steps:
